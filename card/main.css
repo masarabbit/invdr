@@ -1,0 +1,149 @@
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: rgb(31, 8, 85);
+  color: white;
+}
+
+p,
+h1,
+h2,
+h3,
+h4 {
+  display: inline-block;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+
+.wrapper {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.card-wrapper {
+  transform-style: preserve-3d;
+  perspective: 600px;
+}
+
+.card {
+  position: absolute;
+  background-color: #fff;
+  will-change: transform;
+  transform: rotateX(var(--x)) rotateY(var(--y));
+  transition: 0.1s;
+  display: flex;
+  overflow: hidden;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* .one {
+  width: 300%;
+  height: 300%;
+  mix-blend-mode: exclusion;
+  background: repeating-linear-gradient(
+    -45deg,
+    #0e152e 0%,
+    hsl(191, 88%, 60%) 3.8%,
+    hsl(191, 88%, 60%) 4.5%,
+    hsl(191, 88%, 60%) 5.2%,
+    #0e152e 10%,
+    #0e152e 12%
+  );
+  margin-top: calc(-1 * var(--mx));
+  margin-left: calc(-1 * var(--my));
+  opacity: 0.3;
+  background-color: #8b90fb4b;
+  mix-blend-mode: multiply;
+  z-index: 999;
+} */
+
+/* .two {
+  width: 300%;
+  height: 300%;
+  mix-blend-mode: exclusion;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 193, 195, 1) 0%,
+    rgba(253, 187, 45, 1) 100%
+  );
+  margin-top: calc(-1 * var(--mx));
+  margin-left: calc(-1 * var(--my));
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+  z-index: 999;
+} */
+.three {
+  background: radial-gradient(
+    circle,
+    rgba(20, 1, 60, 0) 0%,
+    rgba(20, 1, 60, 0.665) 200%
+  );
+}
+
+.card img {
+  position: relative;
+  height: 100%;
+  width: auto;
+  image-rendering: pixelated;
+}
+
+.input-wrapper {
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+}
+
+.input-wrapper > div {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin: 4px;
+}
+
+.square {
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 0 1px red;
+}
+
+canvas {
+  position: absolute;
+  /* mix-blend-mode: color-dodge; */
+  mix-blend-mode: screen;
+}
+
+.version {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.indicator {
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  color: #fff;
+}

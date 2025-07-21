@@ -1,0 +1,136 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #012625;
+  color: white;
+}
+
+.wrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 20px;
+}
+
+.invader {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 1px yellow;
+  /* width: 20px; */
+}
+
+.invader .body {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px rgb(255, 0, 204);
+  width: 8px;
+  height: 4px;
+  --cell: 4px;
+}
+
+.cell {
+  position: absolute;
+
+  --w: 1;
+  --h: 1;
+  width: calc(var(--w) * var(--cell));
+  height: calc(var(--h) * var(--cell));
+  --x1: 0;
+  --y1: 0;
+  --x2: 0;
+  --y2: 0;
+  animation: move-in forwards 0.2s, color-change forwards 2s;
+}
+
+.left,
+.right {
+  /* position: absolute; */
+  box-shadow: 0 0 0 1px red;
+  width: var(--cell);
+  height: var(--cell);
+}
+
+@keyframes move-in {
+  0% {
+    transform: translate(var(--x1), var(--y1));
+  }
+  100% {
+    transform: translate(var(--x2), var(--y2));
+  }
+}
+
+@keyframes color-change {
+  0% {
+    background-color: aqua;
+  }
+  10% {
+    background-color: #6a1691;
+  }
+  40%,
+  100% {
+    background-color: #fff;
+  }
+}
+
+.indicator {
+  position: fixed;
+  color: #fff;
+  right: 10px;
+  bottom: 10px;
+}
+
+canvas {
+  position: absolute;
+  animation: fade-in forwards 1s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.info-wrapper {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+textarea,
+button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+.button-wrapper {
+  padding: 4px;
+}
+
+button {
+  margin: 4px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button:hover {
+  border: 1px solid hotpink;
+  color: hotpink;
+}

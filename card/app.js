@@ -2,17 +2,17 @@ function init() {
   const wrapper = document.querySelector('.wrapper')
   const nearestN = (x, n) => (x === 0 ? 0 : x - 1 + Math.abs(((x - 1) % n) - n))
   const randomN = max => Math.ceil(Math.random() * max)
-  const clampMax = (n, max) => (n < max ? n : max)
+  // const clampMax = (n, max) => (n < max ? n : max)
   const radToDeg = rad => Math.round(rad * (180 / Math.PI))
   const degToRad = deg => deg / (180 / Math.PI)
   const distanceBetween = ({ a: { x, y }, b: { x: x2, y: y2 } }) =>
     Math.round(Math.sqrt((x - x2) ** 2 + (y - y2) ** 2))
 
-  const getAngle = ({ a: { x, y }, b: { x: x2, y: y2 } }) => {
-    const angle = radToDeg(Math.atan2(y - y2, x - x2)) - 90
-    const adjustedAngle = angle < 0 ? angle + 360 : angle
-    return Math.round(adjustedAngle)
-  }
+  // const getAngle = ({ a: { x, y }, b: { x: x2, y: y2 } }) => {
+  //   const angle = radToDeg(Math.atan2(y - y2, x - x2)) - 90
+  //   const adjustedAngle = angle < 0 ? angle + 360 : angle
+  //   return Math.round(adjustedAngle)
+  // }
 
   const indicator = document.querySelector('.indicator')
 
@@ -134,6 +134,9 @@ function init() {
           return {
             x: i % (w / d),
             y: Math.floor(i / (w / d)),
+            r: 195 - randomN(60),
+            g: 155 - randomN(60),
+            b: 255 - randomN(60),
           }
         }),
       })
@@ -176,9 +179,9 @@ function init() {
         this.overlay.placeTile(
           i,
           `rgba(
-            ${195 - randomN(60) - dist},
-            ${155 - randomN(60) - dist},
-            ${255 - randomN(60) - dist},
+            ${c.r - dist},
+            ${c.g - dist},
+            ${c.b - dist},
             ${2 / nearestN(dist, 2) - 0.09})`,
         )
       })
@@ -228,13 +231,6 @@ function init() {
     container: wrapper,
   })
 
-  // window.addEventListener('mousemove', e => {
-  //   console.log(e)
-  //   // addMarker({
-  //   //   x: e.pageX,
-  //   //   y: e.pageY,
-  //   // })
-  // })
   const filterSelect = Object.assign(document.createElement('select'), {
     innerHTML: [
       'multiply',

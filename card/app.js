@@ -206,15 +206,15 @@ function init() {
         y: '0deg',
       }
       this.overlay.clear()
-      // this.overlay.cells.forEach((_, i) => {
-      //   const dist = 30
+      // this.overlay.cells.forEach((c, i) => {
+      //   // const dist = 30
       //   this.overlay.placeTile(
       //     i,
       //     `rgba(
-      //       ${195 - randomN(60) - dist},
-      //       ${155 - randomN(60) - dist},
-      //       ${255 - randomN(60) - dist},
-      //       ${2 / nearestN(dist, 2)})`,
+      //       ${c.r},
+      //       ${c.g},
+      //       ${c.b},
+      //       ${(c.y + 1) * 0.005})`,
       //   )
       // })
       Object.keys(properties).forEach(p => {

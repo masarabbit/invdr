@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #012625;
+  color: white;
+}
+
+.wrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+}
+
+canvas {
+  box-shadow: 0 0 0 1px hotpink;
+  position: absolute;
+}

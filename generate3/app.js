@@ -2,6 +2,17 @@ function init() {
   const wrapper = document.querySelector('.wrapper')
   const nearestN = (x, n) => (x === 0 ? 0 : x - 1 + Math.abs(((x - 1) % n) - n))
   const randomN = max => Math.ceil(Math.random() * max)
+  // const clampMax = (n, max) => (n < max ? n : max)
+  const radToDeg = rad => Math.round(rad * (180 / Math.PI))
+  const degToRad = deg => deg / (180 / Math.PI)
+  const distanceBetween = ({ a: { x, y }, b: { x: x2, y: y2 } }) =>
+    Math.round(Math.sqrt((x - x2) ** 2 + (y - y2) ** 2))
+
+  const getAngle = ({ a: { x, y }, b: { x: x2, y: y2 } }) => {
+    const angle = radToDeg(Math.atan2(y - y2, x - x2)) - 90
+    const adjustedAngle = angle < 0 ? angle + 360 : angle
+    return Math.round(adjustedAngle)
+  }
 
   class Canvas {
     constructor(props) {
@@ -17,13 +28,11 @@ function init() {
           outline: '#57280f',
           fill: '#fff1b3',
         },
-        tiles: new Array(props.h).fill().map((_, i) => {
-          return new Array(props.w).fill().map((_, i2) => {
-            return {
-              x: i2,
-              y: i,
-            }
-          })
+        tiles: new Array(props.w * props.h).fill().map((_, i) => {
+          return {
+            x: i % props.w,
+            y: Math.floor(i / props.w),
+          }
         }),
       })
       // console.log(this.tiles)
@@ -38,6 +47,18 @@ function init() {
     get height() {
       return this.h * this.d
     }
+    // get r() {
+    //   return {
+    //     x: this.w / 2,
+    //     y: this.h / 2,
+    //   }
+    // }
+    get center() {
+      return {
+        x: this.w / 2 - 0.5,
+        y: this.h / 2 - 0.5,
+      }
+    }
     resizeCanvas() {
       this.el.setAttribute('width', this.width)
       this.el.setAttribute('height', this.height || this.width)
@@ -48,7 +69,6 @@ function init() {
     placeTile(cell, type) {
       const { x, y } = cell
       const { d } = this
-
       this.ctx.fillStyle = this.color?.[type] || '#fff'
       this.ctx.fillRect(x * d, y * d, d, d)
       // if (color === 'transparent') {
@@ -61,30 +81,30 @@ function init() {
   }
 
   const c = new Canvas({
-    w: 30,
-    h: 40,
+    w: 32,
+    h: 28,
     x: 50,
     y: 30,
     d: 10,
     container: wrapper,
   })
 
-  const curve = [2, 3, 4, 1, 2, 1, 0, 0, -3, -2, -1, -1, -1, -2]
+  const ellipseRadiusAtAngle = ({ x: a, y: b }, deg) => {
+    const theta = degToRad(deg)
+    const numerator = a * b
+    const denominator = Math.sqrt(
+      (a * Math.cos(theta)) ** 2 + (b * Math.sin(theta)) ** 2,
+    )
+    return Math.round(numerator / denominator)
+  }
 
-  let n = 15
-  let prevN
-  c.tiles.forEach((row, i) => {
-    const m = nearestN(i, 1)
-    // const n = m < 20 ? Math.abs(m - 20) : 20 - Math.abs(40 - m)
-    prevN = n || 0
-    n = !isNaN(curve?.[i]) ? n - curve[i] : 20
+  c.tiles.forEach(t => {
+    const dist = distanceBetween({ a: c.center, b: t })
+    const angle = getAngle({ a: c.center, b: t })
+    const r = ellipseRadiusAtAngle(c.center, angle)
 
-    row.forEach((t, i) => {
-      if (Math.abs(i - 29) < n || i < n) return
-      // const type = Math.abs(i - 29) === n || i === n ? 'outline' : 'fill'
-      const type = i > prevN && i < n ? 'outline' : 'fill'
-      c.placeTile(t, type)
-    })
+    if (dist === r) c.placeTile(t, 'outline')
+    if (dist < r) c.placeTile(t, 'fill')
   })
 }
 

@@ -2,13 +2,14 @@ function init() {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
   const indicator = document.querySelector('.indicator')
-  const textarea = document.querySelector('textarea')
+  const configInput = document.querySelector('textarea[data-id="config"]')
+  const dataUrlInput = document.querySelector('textarea[data-id="data-url"]')
   const randomN = max => Math.ceil(Math.random() * max)
 
   const data = {
     canvas: null,
     invader: null,
-    invaderCode: {
+    config: {
       layer1: [],
       layer2: [],
     },
@@ -24,33 +25,47 @@ function init() {
         el: document.createElement('canvas'),
         ...props,
       })
-      if (props?.container) props.container.appendChild(this.el)
+
       if (this.w) this.resizeCanvas()
       this.ctx = this.el.getContext('2d')
       this.ctx.imageSmoothingEnabled = false
       this.ctx.fillStyle = '#1b0126'
-      this.ctx.fillRect(0, 0, this.w, this.h)
+      this.ctx.fillRect(0, 0, this.width, this.height)
       this.cells.forEach(c => {
         this.placeTile(c, null)
       })
+      this.img = Object.assign(document.createElement('div'), {
+        className: 'generated-image',
+        style: `
+          background-image: url(${this.el.toDataURL()});
+          width: ${this.w}px;
+          height: ${this.h}px;
+        `,
+      })
+      if (props?.container) props.container.appendChild(this.img)
+    }
+    get width() {
+      return this.w / 10
+    }
+    get height() {
+      return this.h / 10
     }
     resizeCanvas(w, h) {
-      this.el.setAttribute('width', w || this.w)
-      this.el.setAttribute('height', h || w || this.h || this.w)
+      this.el.setAttribute('width', w || this.width)
+      this.el.setAttribute('height', h || w || this.height || this.width)
     }
     placeTile(cell, color) {
       const { x, y } = cell
-      const { d } = this
       if (color === 'transparent') {
-        this.ctx.clearRect(x, y, d, d)
+        this.ctx.clearRect(x, y, 1, 1)
       } else {
         this.ctx.fillStyle = color || '#fff'
-        this.ctx.fillRect(x, y, d, d)
+        this.ctx.fillRect(x, y, 1, 1)
       }
     }
-    draw({ x, y, img }) {
-      this.ctx.drawImage(img.data, x - img.w / 2, y - img.h / 2, img.w, img.h)
-    }
+    // draw({ x, y, img }) {
+    //   this.ctx.drawImage(img.data, x - img.width / 2, y - img.height / 2, img.w, img.h)
+    // }
   }
 
   class Cell {
@@ -88,8 +103,8 @@ function init() {
   }
   class mainCell extends Cell {
     constructor(props) {
-      const indexArray = data?.invaderCode?.[props.body.type]
-      const invaderCode = indexArray.length
+      const indexArray = data?.config?.[props.body.type]
+      const config = indexArray.length
         ? indexArray[props.index]
         : {
             x: randomPos(),
@@ -99,11 +114,11 @@ function init() {
         properties: {
           x1: props.x1 || 0,
           y1: props.y1 || 0,
-          x2: directions[invaderCode.x],
-          y2: directions[invaderCode.y],
+          x2: directions[config.x],
+          y2: directions[config.y],
         },
         indexArray,
-        invaderCode,
+        config,
         ...props,
       })
       this.body.leftCells.push(this)
@@ -168,9 +183,9 @@ function init() {
 
   class Invader {
     constructor() {
-      if (textarea.value) {
-        const invaderData = textarea.value.split('|')
-        data.invaderCode = {
+      if (configInput.value) {
+        const invaderData = configInput.value.split('|')
+        data.config = {
           layer1: invaderData[0].split(',').map(c => {
             const indexes = c.split('.')
             return { x: indexes[0], y: indexes[1] }
@@ -214,12 +229,11 @@ function init() {
       const h = allPos[allPos.length - 1].y - y + 10
 
       this.data = `${this.layer1.leftCells
-        .map(c => `${c.invaderCode.x}.${c.invaderCode.y}`)
+        .map(c => `${c.config.x}.${c.config.y}`)
         .join(',')}|${this.layer2.leftCells
-        .map(c => `${c.invaderCode.x}.${c.invaderCode.y}`)
+        .map(c => `${c.config.x}.${c.config.y}`)
         .join(',')}`
 
-      textarea.value = this.data
       Object.assign(this.el.style, {
         width: `${w}px`,
         height: `${h}px`,
@@ -228,18 +242,21 @@ function init() {
       data.canvas = new Canvas({
         w: w + 40,
         h: h + 40,
-        d: 10,
+        // d: 10,
         container: this.el,
         cells: allPos.map(c => {
           return {
-            x: c.x - x + 20,
-            y: c.y - y + 20,
+            x: (c.x - x) / 10 + 2,
+            y: (c.y - y) / 10 + 2,
           }
         }),
       })
 
-      const offset = y - data.canvas.el.getBoundingClientRect().top
-      data.canvas.el.style.top = `${offset - 40}px`
+      configInput.value = this.data
+      dataUrlInput.value = data.canvas.el.toDataURL()
+
+      const offset = y - data.canvas.img.getBoundingClientRect().top
+      data.canvas.img.style.top = `${offset - 40}px`
     }
   }
 
@@ -257,10 +274,15 @@ function init() {
     }
   })
 
-  document.querySelector('.copy').addEventListener('click', () => {
-    textarea.select()
-    textarea.setSelectionRange(0, 999999) // For mobile devices
-    document.execCommand('copy')
+  document.querySelectorAll('.copy').forEach(b => {
+    b.addEventListener('click', () => {
+      const textarea = document.querySelector(
+        `textarea[data-id="${b.dataset.id}"]`,
+      )
+      textarea.select()
+      textarea.setSelectionRange(0, 999999) // For mobile devices
+      document.execCommand('copy')
+    })
   })
 
   const generate = () => {
@@ -280,8 +302,8 @@ function init() {
     .addEventListener('click', generate)
 
   document.querySelector('.generate-new').addEventListener('click', () => {
-    textarea.value = ''
-    data.invaderCode = { layer1: [], layer2: [] }
+    configInput.value = ''
+    data.config = { layer1: [], layer2: [] }
     generate()
   })
 }

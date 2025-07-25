@@ -2,10 +2,34 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="main.css" />
-    <script src="scripts/thumbnails.js" charset="utf-8"></script>
+    <script type="module" src="scripts/thumbnails.js" charset="utf-8"></script>
     <title>invaders - thumbnails</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
+
+  <style>
+    .wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 16px;
+    }
+
+    a {
+      /* display: flex;
+      flex-direction: column; */
+      margin: 8px;
+      text-decoration: none;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #fff;
+    }
+
+    a img {
+      width: 80px;
+      height: auto;
+      image-rendering: pixelated;
+    }
+  </style>
   <body>
     <div class="wrapper"></div>
   </body>

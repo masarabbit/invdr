@@ -5,7 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
     return (
       a +
       `
-      <a class="" href="/card/index.html?invader=${encodeURIComponent(
+      <a class="" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
         i.dataUrl.split(',')[1],
       )}">
         <img src="${i.dataUrl}" alt="${i.name}">

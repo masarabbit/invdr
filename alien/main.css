@@ -1,0 +1,20 @@
+.wrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alien {
+  box-shadow: 0 0 0 1px hotpink;
+  display: flex;
+  justify-content: center;
+}
+
+.body {
+  box-shadow: 0 0 0 1px yellow;
+  width: var(--w);
+  height: var(--h);
+}

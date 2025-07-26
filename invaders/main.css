@@ -91,6 +91,7 @@ canvas {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-bottom: 30px;
 }
 
 .generated-image {
@@ -173,8 +174,8 @@ input {
   flex-grow: 1;
 }
 
-input:placeholder-shown + .btn-wrapper {
-  opacity: 0.5;
+input:placeholder-shown + button {
+  opacity: 0.3;
   pointer-events: none;
 }
 

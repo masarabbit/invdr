@@ -1,7 +1,7 @@
 function init() {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
-  const indicator = document.querySelector('.indicator')
+  const downloadBtn = document.querySelector('.download')
   const configInput = document.querySelector('input[data-id="config"]')
   const dataUrlInput = document.querySelector('input[data-id="data-url"]')
   const randomN = max => Math.ceil(Math.random() * max)
@@ -68,6 +68,7 @@ function init() {
         `,
       })
       if (this?.container) this.container.appendChild(this.img)
+      downloadBtn.disabled = false
     }
     resizeCanvas(w, h) {
       this.el.setAttribute('width', w || this.width)
@@ -293,7 +294,7 @@ function init() {
   // textarea.value = `1.0,0.2,2.0,1.2,0.0,0.1,2.1,0.0,1.2,1.1,1.2,0.2,2.1,2.0,1.2,0.1,0.1,1.0,2.1,2.1,1.0,2.2,0.1,2.0,1.0,0.1,0.2,0.1,2.1,0.2,2.2,2.1,2.2,0.0,2.1,1.0,0.0,2.1,0.0,2.2,0.0,0.0,1.2,0.2,0.0,2.0,1.1,0.0,1.1,1.0,1.2,2.1,1.0,1.1,0.0,1.1,1.1,1.0,0.2,1.0,1.0,0.0,1.2,0.0,2.1,2.1,1.0,2.1,1.0,0.0,1.1,1.0,2.0,2.1,1.1,2.2,0.2,2.0,1.0,1.0,2.2,2.2,0.1,2.1,0.2,0.0,2.2,1.1,2.0,2.1,1.0,2.1,1.2,2.0,0.2,2.2,0.1,0.0,2.2,1.1|0.0,2.2,2.2,0.1,2.2,1.0,2.0,2.0,1.2,1.2,1.2,2.1,0.1,1.0,0.0,1.1,0.0,2.0,0.1,0.1,2.2,1.1,1.0,0.0,0.0,1.2,2.1,1.2,2.2,0.1,1.1,2.0,1.2,1.1,1.0,2.1,0.2,0.1,1.0,1.2,0.0,2.2,2.0,1.2,0.1,0.2,0.1,1.0,0.2,2.1,0.1,0.2,1.2,2.2,1.1,0.2,1.0,0.2,0.1,1.1,0.1,2.1,1.1,1.1,1.0,0.1,0.0,0.1,2.0,1.2,2.1,2.2,1.0,2.2,0.0,1.2,2.2,1.1,0.0,2.2,0.2,2.0,0.2,1.0,1.2,0.2,0.1,1.2,2.0,1.0,1.0,1.1,0.0,2.0,2.2,1.0,0.2,0.0,0.0,0.2`
   data.invader = new Invader()
 
-  document.querySelector('.download').addEventListener('click', () => {
+  downloadBtn.addEventListener('click', () => {
     if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
     const link = document.createElement('a')
     link.download = `invader_${new Date().getTime()}.png`
@@ -330,6 +331,8 @@ function init() {
 
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''
+    dataUrlInput.value = ''
+    downloadBtn.disabled = true
     data.config = { layer1: [], layer2: [] }
     generate({ save: true })
   })

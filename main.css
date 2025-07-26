@@ -29,10 +29,31 @@ button:hover {
   color: hotpink;
 }
 
+button:disabled {
+  opacity: 0.3;
+}
+
 nav {
   position: absolute;
   text-align: right;
   width: 100%;
-  padding: 8px 16px;
+  padding: 8px;
   z-index: 1;
+}
+
+.sign {
+  position: fixed;
+  color: #fff;
+  bottom: 10px;
+  right: 10px;
+  font-size: 10px;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }

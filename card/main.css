@@ -3,14 +3,6 @@
   user-select: none;
 }
 
-/* body {
-  padding: 0;
-  margin: 0;
-  font-family: sans-serif;
-  background-color: rgb(26, 12, 60);
-  color: white;
-} */
-
 .wrapper {
   position: absolute;
   display: flex;
@@ -19,6 +11,16 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  animation: fade-in forwards 2s;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .card-wrapper {

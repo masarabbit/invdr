@@ -103,6 +103,14 @@ function init() {
             height: ${props.h}px;
           `,
         }),
+        animation: {
+          interval: null,
+          phase: 1,
+          pos: {
+            x: 40,
+            y: 40,
+          },
+        },
         ...props,
       })
 
@@ -112,6 +120,7 @@ function init() {
 
       mouse.move(this.el, 'add', e => this.handleInteraction(e))
       mouse.leave(this.el, 'add', () => this.clearProperties())
+      this.animateCard()
     }
     createOverlay() {
       const { w, h, d } = this
@@ -137,7 +146,54 @@ function init() {
         y: this.h / 2,
       }
     }
-    tiltCard(x, y) {
+    animateCard() {
+      this.animation.interval = setInterval(() => {
+        if (
+          this.animation.phase === 0 &&
+          this.animation.pos.x !== 40 &&
+          this.animation.pos.y !== 40
+        ) {
+          this.animation.pos.x += 10
+          this.animation.pos.y += 10
+        } else if (this.animation.phase === 0) {
+          this.animation.phase = 1
+        }
+
+        if (
+          this.animation.phase === 1 &&
+          Math.abs(this.animation.pos.x - (this.w - 40)) > 10
+        ) {
+          this.animation.pos.x += 10
+        } else if (this.animation.phase === 1) {
+          this.animation.phase = 2
+        }
+
+        if (
+          this.animation.phase === 2 &&
+          Math.abs(this.animation.pos.y - (this.h - 40)) > 10
+        ) {
+          this.animation.pos.y += 10
+        } else if (this.animation.phase === 2) {
+          this.animation.phase = 3
+        }
+
+        if (this.animation.phase === 3 && this.animation.pos.x > 40) {
+          this.animation.pos.x -= 10
+        } else if (this.animation.phase === 3) {
+          this.animation.phase = 4
+        }
+
+        if (this.animation.phase === 4 && this.animation.pos.y > 40) {
+          this.animation.pos.y -= 10
+        } else if (this.animation.phase === 4) {
+          this.animation.phase = 1
+          this.animation.pos.x += 10
+        }
+        this.tiltCard(this.animation.pos)
+      }, 120)
+    }
+    tiltCard({ x, y }) {
+      this.overlay.clear()
       const oppositePos = rotateCoord({
         deg: 180,
         pos: { x, y },
@@ -176,12 +232,22 @@ function init() {
         this.wrapper.style.setProperty(`--${p}`, overlayProperties[p])
       })
     }
+    stopAnimation() {
+      clearInterval(this.animationTimer)
+      clearInterval(this.animation.interval)
+      this.animation.interval = null
+      this.animation.phase = 0
+      this.animation.pos = { x: 0, y: 0 }
+    }
     handleInteraction(e) {
       e.preventDefault()
       const { left, top } = this.el.getBoundingClientRect()
-      this.overlay.clear()
+      this.stopAnimation()
 
-      this.tiltCard(getPagePos(e, 'X') - left, getPagePos(e, 'Y') - top)
+      this.tiltCard({
+        x: getPagePos(e, 'X') - left,
+        y: getPagePos(e, 'Y') - top,
+      })
     }
     clearProperties() {
       const properties = {
@@ -192,6 +258,10 @@ function init() {
       Object.keys(properties).forEach(p => {
         this.el.style.setProperty(`--${p}`, properties[p])
       })
+      clearInterval(this.animationTimer)
+      this.animationTimer = setTimeout(() => {
+        if (!this.animation.interval) this.animateCard()
+      }, 4000)
     }
   }
 

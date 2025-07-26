@@ -2,8 +2,8 @@ function init() {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
   const indicator = document.querySelector('.indicator')
-  const configInput = document.querySelector('textarea[data-id="config"]')
-  const dataUrlInput = document.querySelector('textarea[data-id="data-url"]')
+  const configInput = document.querySelector('input[data-id="config"]')
+  const dataUrlInput = document.querySelector('input[data-id="data-url"]')
   const randomN = max => Math.ceil(Math.random() * max)
 
   const data = {

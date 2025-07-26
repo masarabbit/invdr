@@ -1,6 +1,6 @@
 .wrapper {
   position: absolute;
-  height: 100vh;
+  height: calc(100vh - 100px);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -166,25 +166,24 @@ canvas {
   }
 } */
 
-textarea {
+input {
   border: 0;
   color: #0badd1;
   background-color: #167b914f;
+  flex-grow: 1;
 }
 
-textarea:placeholder-shown + .btn-wrapper {
+input:placeholder-shown + .btn-wrapper {
   opacity: 0.5;
   pointer-events: none;
-}
-
-textarea + .btn-wrapper {
-  display: flex;
-  justify-content: end;
-  margin-bottom: 10px;
 }
 
 .btn-wrapper {
   padding: 4px;
   text-align: center;
   margin-bottom: 40px;
+}
+
+section {
+  display: flex;
 }

@@ -50,11 +50,15 @@ window.addEventListener('DOMContentLoaded', () => {
         ...props,
       })
       wrapper.appendChild(this.el)
-      new Body({
+      this.body = new Body({
         container: this.el,
       })
     }
   }
 
-  new Alien()
+  const alien = new Alien()
+
+  ;['top', 'left', 'right', 'bottom'].forEach(dir => {
+    new Body({ container: alien.body[dir] })
+  })
 })

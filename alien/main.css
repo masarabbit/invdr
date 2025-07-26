@@ -14,7 +14,7 @@
 }
 
 .body {
-  position: relative;
+  position: absolute;
   box-shadow: 0 0 0 1px rgba(255, 255, 0, 0.114);
   width: var(--w);
   height: var(--h);
@@ -25,24 +25,33 @@
 
 .anchor {
   position: absolute;
+  display: flex;
 }
 
 .anchor.top {
   top: 0;
   box-shadow: 0 0 0 1px rgb(47, 102, 255);
+  justify-content: center;
+  align-items: end;
 }
 
 .anchor.bottom {
   bottom: 0;
   box-shadow: 0 0 0 1px rgb(47, 255, 220);
+  justify-content: center;
+  align-items: start;
 }
 
 .anchor.left {
   left: 0;
   box-shadow: 0 0 0 1px pink;
+  align-items: center;
+  justify-content: right;
 }
 
 .anchor.right {
   right: 0;
   box-shadow: 0 0 0 1px rgb(255, 217, 47);
+  align-items: center;
+  justify-content: left;
 }

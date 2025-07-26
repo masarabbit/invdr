@@ -9,3 +9,30 @@ body {
   background-color: #1b0126;
   color: white;
 }
+
+.btn,
+button {
+  background-color: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  margin: 4px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.btn:hover,
+button:hover {
+  border: 1px solid hotpink;
+  color: hotpink;
+}
+
+nav {
+  position: absolute;
+  text-align: right;
+  width: 100%;
+  padding: 8px 16px;
+  z-index: 1;
+}

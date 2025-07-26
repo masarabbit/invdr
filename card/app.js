@@ -153,8 +153,8 @@ function init() {
           this.animation.pos.x !== 40 &&
           this.animation.pos.y !== 40
         ) {
-          this.animation.pos.x += 10
-          this.animation.pos.y += 10
+          this.animation.pos.x++
+          this.animation.pos.y++
         } else if (this.animation.phase === 0) {
           this.animation.phase = 1
         }
@@ -163,7 +163,7 @@ function init() {
           this.animation.phase === 1 &&
           Math.abs(this.animation.pos.x - (this.w - 40)) > 10
         ) {
-          this.animation.pos.x += 10
+          this.animation.pos.x++
         } else if (this.animation.phase === 1) {
           this.animation.phase = 2
         }
@@ -172,25 +172,25 @@ function init() {
           this.animation.phase === 2 &&
           Math.abs(this.animation.pos.y - (this.h - 40)) > 10
         ) {
-          this.animation.pos.y += 10
+          this.animation.pos.y++
         } else if (this.animation.phase === 2) {
           this.animation.phase = 3
         }
 
         if (this.animation.phase === 3 && this.animation.pos.x > 40) {
-          this.animation.pos.x -= 10
+          this.animation.pos.x--
         } else if (this.animation.phase === 3) {
           this.animation.phase = 4
         }
 
         if (this.animation.phase === 4 && this.animation.pos.y > 40) {
-          this.animation.pos.y -= 10
+          this.animation.pos.y--
         } else if (this.animation.phase === 4) {
           this.animation.phase = 1
-          this.animation.pos.x += 10
+          this.animation.pos.x++
         }
         this.tiltCard(this.animation.pos)
-      }, 120)
+      }, 10)
     }
     tiltCard({ x, y }) {
       this.overlay.clear()

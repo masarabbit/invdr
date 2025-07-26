@@ -105,10 +105,10 @@ function init() {
         }),
         animation: {
           interval: null,
-          phase: 1,
+          phase: 0,
           pos: {
-            x: 40,
-            y: 40,
+            x: 0,
+            y: 0,
           },
         },
         ...props,
@@ -120,7 +120,10 @@ function init() {
 
       mouse.move(this.el, 'add', e => this.handleInteraction(e))
       mouse.leave(this.el, 'add', () => this.clearProperties())
-      this.animateCard()
+
+      this.animationTimer = setTimeout(() => {
+        if (!this.animation.interval) this.animateCard()
+      }, 2000)
     }
     createOverlay() {
       const { w, h, d } = this

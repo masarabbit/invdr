@@ -7,7 +7,7 @@
   padding: 0;
   margin: 0;
   font-family: sans-serif;
-  background-color: rgb(34, 6, 56);
+  background-color: rgb(26, 12, 60);
   color: white;
 } */
 
@@ -18,12 +18,27 @@
   align-items: center;
   width: 100%;
   height: 100vh;
+  overflow: hidden;
 }
 
 .card-wrapper {
   position: relative;
   transform-style: preserve-3d;
   perspective: 600px;
+}
+
+.wrapper::before {
+  position: absolute;
+  content: '';
+  width: 140%;
+  height: 140%;
+  /* top: -20%;
+  left: -20%; */
+  background-image: radial-gradient(
+    rgb(30, 7, 90) 10%,
+    transparent 70%,
+    transparent 100%
+  );
 }
 
 .card {

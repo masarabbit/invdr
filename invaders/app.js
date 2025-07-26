@@ -13,7 +13,25 @@ function init() {
       layer1: [],
       layer2: [],
     },
+    saveDataName: 'ma5a_nvdr_generated_data',
+    savedData: [],
+    readData() {
+      const saveData = localStorage.getItem(this.saveDataName)
+      if (saveData) this.savedData = JSON.parse(saveData)
+    },
+    saveData(config, dataUrl) {
+      this.savedData.push({
+        config,
+        dataUrl,
+        name: new Array(3 + randomN(7))
+          .fill('')
+          .reduce(a => (a += 'aiueoxyzkbraiueo'[randomN(16)]), ''),
+      })
+      localStorage.setItem(this.saveDataName, JSON.stringify(this.savedData))
+    },
   }
+
+  data.readData()
 
   const randomPos = () => {
     return Math.floor(Math.random() * 3)
@@ -25,24 +43,13 @@ function init() {
         el: document.createElement('canvas'),
         ...props,
       })
-
       if (this.w) this.resizeCanvas()
       this.ctx = this.el.getContext('2d')
       this.ctx.imageSmoothingEnabled = false
       this.ctx.fillStyle = '#1b0126'
       this.ctx.fillRect(0, 0, this.width, this.height)
-      this.cells.forEach(c => {
-        this.placeTile(c, null)
-      })
-      this.img = Object.assign(document.createElement('div'), {
-        className: 'generated-image',
-        style: `
-          background-image: url(${this.el.toDataURL()});
-          width: ${this.w}px;
-          height: ${this.h}px;
-        `,
-      })
-      if (props?.container) props.container.appendChild(this.img)
+      this.cells.forEach(c => this.placeTile(c))
+      this.createImg()
     }
     get width() {
       return this.w / 10
@@ -50,18 +57,35 @@ function init() {
     get height() {
       return this.h / 10
     }
+    createImg() {
+      this.img = new Image()
+      Object.assign(this.img, {
+        className: 'generated-image',
+        src: this.el.toDataURL(),
+        style: `
+          width: ${this.w}px;
+          height: ${this.h}px;
+        `,
+      })
+      if (this?.container) this.container.appendChild(this.img)
+    }
     resizeCanvas(w, h) {
       this.el.setAttribute('width', w || this.width)
       this.el.setAttribute('height', h || w || this.height || this.width)
     }
-    placeTile(cell, color) {
+    placeTile(cell, d = 1) {
       const { x, y } = cell
-      if (color === 'transparent') {
-        this.ctx.clearRect(x, y, 1, 1)
-      } else {
-        this.ctx.fillStyle = color || '#fff'
-        this.ctx.fillRect(x, y, 1, 1)
-      }
+      this.ctx.fillStyle = '#fff'
+      this.ctx.fillRect(x * d, y * d, d, d)
+    }
+    createDownloadImg() {
+      this.resizeCanvas(this.w, this.h)
+      this.ctx.fillStyle = '#1b0126'
+      this.ctx.fillRect(0, 0, this.w, this.h)
+      this.cells.forEach(c => {
+        this.placeTile(c, 10)
+      })
+      this.downloadImg = this.el.toDataURL()
     }
     // draw({ x, y, img }) {
     //   this.ctx.drawImage(img.data, x - img.width / 2, y - img.height / 2, img.w, img.h)
@@ -182,7 +206,11 @@ function init() {
   }
 
   class Invader {
-    constructor() {
+    constructor(props) {
+      Object.assign(this, {
+        save: true,
+        ...props,
+      })
       if (configInput.value) {
         const invaderData = configInput.value.split('|')
         data.config = {
@@ -242,7 +270,6 @@ function init() {
       data.canvas = new Canvas({
         w: w + 40,
         h: h + 40,
-        // d: 10,
         container: this.el,
         cells: allPos.map(c => {
           return {
@@ -254,6 +281,7 @@ function init() {
 
       configInput.value = this.data
       dataUrlInput.value = data.canvas.el.toDataURL()
+      if (this.save) data.saveData(configInput.value, dataUrlInput.value)
 
       const offset = y - data.canvas.img.getBoundingClientRect().top
       data.canvas.img.style.top = `${offset - 40}px`
@@ -266,12 +294,11 @@ function init() {
   data.invader = new Invader()
 
   document.querySelector('.download').addEventListener('click', () => {
-    if (data.canvas) {
-      const link = document.createElement('a')
-      link.download = `invader_${new Date().getTime()}.png`
-      link.href = data.canvas.el.toDataURL()
-      link.click()
-    }
+    if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
+    const link = document.createElement('a')
+    link.download = `invader_${new Date().getTime()}.png`
+    link.href = data.canvas.downloadImg
+    link.click()
   })
 
   document.querySelectorAll('.copy').forEach(b => {
@@ -285,7 +312,7 @@ function init() {
     })
   })
 
-  const generate = () => {
+  const generate = ({ save }) => {
     if (data.canvas) {
       data.canvas.el.remove()
       data.canvas = null
@@ -294,17 +321,17 @@ function init() {
       data.invader.el.remove()
       data.invader = null
     }
-    data.invader = new Invader()
+    data.invader = new Invader({ save })
   }
 
   document
     .querySelector('.generate-from-code')
-    .addEventListener('click', generate)
+    .addEventListener('click', () => generate({ save: false }))
 
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''
     data.config = { layer1: [], layer2: [] }
-    generate()
+    generate({ save: true })
   })
 }
 

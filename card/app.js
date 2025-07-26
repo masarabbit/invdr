@@ -18,6 +18,8 @@ function init() {
     }
   }
 
+  // TODO add auto animation for handling card
+
   const addEvents = (target, event, action, array) => {
     array.forEach(a => target[`${event}EventListener`](a, action))
   }
@@ -135,14 +137,7 @@ function init() {
         y: this.h / 2,
       }
     }
-    handleInteraction(e) {
-      e.preventDefault()
-      const { left, top } = this.el.getBoundingClientRect()
-      const x = getPagePos(e, 'X') - left
-      const y = getPagePos(e, 'Y') - top
-
-      this.overlay.clear()
-
+    tiltCard(x, y) {
       const oppositePos = rotateCoord({
         deg: 180,
         pos: { x, y },
@@ -180,6 +175,13 @@ function init() {
       Object.keys(overlayProperties).forEach(p => {
         this.wrapper.style.setProperty(`--${p}`, overlayProperties[p])
       })
+    }
+    handleInteraction(e) {
+      e.preventDefault()
+      const { left, top } = this.el.getBoundingClientRect()
+      this.overlay.clear()
+
+      this.tiltCard(getPagePos(e, 'X') - left, getPagePos(e, 'Y') - top)
     }
     clearProperties() {
       const properties = {

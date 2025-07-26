@@ -25,7 +25,7 @@ function init() {
         dataUrl,
         name: new Array(3 + randomN(7))
           .fill('')
-          .reduce(a => (a += 'aiueoxyzkbraiueo'[randomN(16)]), ''),
+          .reduce(a => (a += 'aiueoxyzkbraiueop'[randomN(16)]), ''),
       })
       localStorage.setItem(this.saveDataName, JSON.stringify(this.savedData))
     },

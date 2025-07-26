@@ -110,22 +110,6 @@ canvas {
   }
 }
 
-/* @keyframes fade-in {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  90% {
-    opacity: 0;
-    transform: scale(2);
-  }
-  99% {
-    opacity: 0;
-    transform: scale(1);
-  }
-} */
-
 /* .animate .layer1 {
   animation: animate-layer1 2s infinite steps(2);
 }
@@ -205,6 +189,7 @@ textarea + .btn-wrapper {
   margin-bottom: 40px;
 }
 
+.btn,
 button {
   background-color: transparent;
   border: 1px solid #fff;
@@ -213,9 +198,20 @@ button {
   padding: 4px 8px;
   text-transform: uppercase;
   cursor: pointer;
+  text-decoration: none;
+  font-size: 0.8rem;
 }
 
+.btn:hover,
 button:hover {
   border: 1px solid hotpink;
   color: hotpink;
+}
+
+nav {
+  position: absolute;
+  text-align: right;
+  width: 100%;
+  padding: 8px 16px;
+  z-index: 1;
 }

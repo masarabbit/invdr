@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
 
+  //TODO may not need setProperties
   class Body {
     constructor(props) {
       Object.assign(this, {
@@ -25,6 +26,9 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       if (props?.container) props.container.appendChild(this.el)
       this.setProperties()
+      ;['top', 'left', 'right', 'bottom'].forEach(dir => {
+        this[dir] = this.el.querySelector(`.${dir}`)
+      })
     }
     setProperties() {
       Object.keys(this.properties).forEach(p => {

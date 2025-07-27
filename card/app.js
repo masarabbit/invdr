@@ -107,8 +107,8 @@ function init() {
           interval: null,
           phase: 0,
           pos: {
-            x: 0,
-            y: 0,
+            x: props.w / 2,
+            y: props.h / 2,
           },
         },
         ...props,
@@ -156,8 +156,8 @@ function init() {
           this.animation.pos.x !== 40 &&
           this.animation.pos.y !== 40
         ) {
-          this.animation.pos.x++
-          this.animation.pos.y++
+          this.animation.pos.x += this.w / 2 > 40 ? -1 : 1
+          this.animation.pos.y += this.h / 2 > 40 ? -1 : 1
         } else if (this.animation.phase === 0) {
           this.animation.phase = 1
         }
@@ -240,7 +240,7 @@ function init() {
       clearInterval(this.animation.interval)
       this.animation.interval = null
       this.animation.phase = 0
-      this.animation.pos = { x: 0, y: 0 }
+      this.animation.pos = { x: this.w / 2, y: this.h / 2 }
     }
     handleInteraction(e) {
       e.preventDefault()

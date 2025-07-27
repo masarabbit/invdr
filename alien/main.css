@@ -9,8 +9,12 @@
 
 .alien {
   box-shadow: 0 0 0 1px hotpink;
+  position: absolute;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 0;
+  height: 0;
 }
 
 .body {
@@ -54,4 +58,14 @@
   box-shadow: 0 0 0 1px rgb(255, 217, 47);
   align-items: center;
   justify-content: left;
+}
+
+.circle {
+  background-color: #fff000;
+  border-radius: 50%;
+}
+
+.square {
+  background-color: #86e63d;
+  border-radius: 10px;
 }

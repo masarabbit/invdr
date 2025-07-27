@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
+  const randomN = max => Math.ceil(Math.random() * max)
 
   //TODO may not need setProperties
   class Body {
@@ -7,32 +8,74 @@ window.addEventListener('DOMContentLoaded', () => {
       Object.assign(this, {
         el: Object.assign(document.createElement('div'), {
           className: `body ${props.type}`,
-          innerHTML: `
+          innerHTML:
+            props.anchors ||
+            `
             <div class="anchor top"></div>
             <div class="anchor left"></div>
             <div class="anchor right"></div>
             <div class="anchor bottom"></div>
           `,
-          // style: `
-          //    width: 80px;
-          //    height: 80px;
-          // `,
+          style: `
+             width: ${props.w || 80}px;
+             height: ${props.h || 80}px;
+          `,
         }),
-        properties: {
-          w: 80,
-          h: 80,
-        },
+        // properties: {
+        //   w: 80,
+        //   h: 80,
+        // },
         ...props,
       })
       if (props?.container) props.container.appendChild(this.el)
-      this.setProperties()
+      // this.setProperties()
+      this.setAnchors()
+    }
+    setAnchors() {
       ;['top', 'left', 'right', 'bottom'].forEach(dir => {
         this[dir] = this.el.querySelector(`.${dir}`)
       })
     }
-    setProperties() {
-      Object.keys(this.properties).forEach(p => {
-        this.el.style.setProperty(`--${p}`, `${this.properties[p]}px`)
+    // setProperties() {
+    //   Object.keys(this.properties).forEach(p => {
+    //     this.el.style.setProperty(`--${p}`, `${this.properties[p]}px`)
+    //   })
+    // }
+  }
+
+  class Circle extends Body {
+    constructor(props) {
+      super({
+        type: 'circle',
+        w: 60,
+        h: 60,
+        // properties: {
+        //   w: 60,
+        //   h: 60,
+        // },
+        ...props,
+      })
+    }
+  }
+
+  class Square extends Body {
+    constructor(props) {
+      super({
+        type: 'square',
+        // properties: {
+        //   w: 70,
+        //   h: 70,
+        // },
+        w: 70,
+        h: 70,
+        ...props,
+      })
+      // TODO
+      ;['top', 'left', 'right', 'bottom'].forEach(dir => {
+        if (randomN(6) === 6) {
+          const bodyPart = randomN(2) === 2 ? Circle : Square
+          new bodyPart({ container: this[dir] })
+        }
       })
     }
   }
@@ -42,10 +85,10 @@ window.addEventListener('DOMContentLoaded', () => {
       Object.assign(this, {
         el: Object.assign(document.createElement('div'), {
           className: 'alien',
-          style: `
-             width: 100px;
-             height: 100px;
-          `,
+          // style: `
+          //    width: 100px;
+          //    height: 100px;
+          // `,
         }),
         ...props,
       })
@@ -59,6 +102,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const alien = new Alien()
 
   ;['top', 'left', 'right', 'bottom'].forEach(dir => {
-    new Body({ container: alien.body[dir] })
+    // new Body({ container: alien.body[dir] })
+    const bodyPart = randomN(2) === 2 ? Circle : Square
+    new bodyPart({ container: alien.body[dir] })
   })
 })

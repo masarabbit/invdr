@@ -2,6 +2,7 @@ function init() {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
   const downloadBtn = document.querySelector('.download')
+  const animateBtn = document.querySelector('.animate')
   const configInput = document.querySelector('input[data-id="config"]')
   const dataUrlInput = document.querySelector('input[data-id="data-url"]')
   const randomN = max => Math.ceil(Math.random() * max)
@@ -23,9 +24,10 @@ function init() {
       this.savedData.push({
         config,
         dataUrl,
+        animationConfig: this.animationConfig,
         name: new Array(3 + randomN(7))
           .fill('')
-          .reduce(a => (a += 'aiueoxyzkbraiueop'[randomN(16)]), ''),
+          .reduce(a => (a += 'aiueoxyzkbraiueopt'[randomN(17)]), ''),
       })
       localStorage.setItem(this.saveDataName, JSON.stringify(this.savedData))
     },
@@ -33,22 +35,18 @@ function init() {
 
   data.readData()
 
-  const randomPos = () => {
-    return Math.floor(Math.random() * 3)
-  }
+  const randomPos = () => Math.floor(Math.random() * 3)
 
   class Canvas {
     constructor(props) {
       Object.assign(this, {
         el: document.createElement('canvas'),
+        fill: '#1b0126',
         ...props,
       })
       if (this.w) this.resizeCanvas()
       this.ctx = this.el.getContext('2d')
       this.ctx.imageSmoothingEnabled = false
-      this.ctx.fillStyle = '#1b0126'
-      this.ctx.fillRect(0, 0, this.width, this.height)
-      this.cells.forEach(c => this.placeTile(c))
       this.createImg()
     }
     get width() {
@@ -58,9 +56,10 @@ function init() {
       return this.h / 10
     }
     createImg() {
+      this.cells.forEach(c => this.placeTile(c))
       this.img = new Image()
       Object.assign(this.img, {
-        className: 'generated-image',
+        className: 'image',
         src: this.el.toDataURL(),
         style: `
           width: ${this.w}px;
@@ -68,7 +67,7 @@ function init() {
         `,
       })
       if (this?.container) this.container.appendChild(this.img)
-      downloadBtn.disabled = false
+      ;[downloadBtn, animateBtn].forEach(b => (b.disabled = false))
     }
     resizeCanvas(w, h) {
       this.el.setAttribute('width', w || this.width)
@@ -81,16 +80,15 @@ function init() {
     }
     createDownloadImg() {
       this.resizeCanvas(this.w, this.h)
-      this.ctx.fillStyle = '#1b0126'
-      this.ctx.fillRect(0, 0, this.w, this.h)
+      if (this.fill) {
+        this.ctx.fillStyle = this.fill
+        this.ctx.fillRect(0, 0, this.w, this.h)
+      }
       this.cells.forEach(c => {
         this.placeTile(c, 10)
       })
       this.downloadImg = this.el.toDataURL()
     }
-    // draw({ x, y, img }) {
-    //   this.ctx.drawImage(img.data, x - img.width / 2, y - img.height / 2, img.w, img.h)
-    // }
   }
 
   class Cell {
@@ -154,7 +152,7 @@ function init() {
         this.split()
       } else if (this.body.type === 'layer2') {
         setTimeout(() => {
-          this.body.invader.drawCopy()
+          this.body.invader.drawOnCanvas()
         }, 2400)
       }
     }
@@ -241,27 +239,114 @@ function init() {
     get rightCells() {
       return [...this.layer1?.rightCells, ...this.layer2?.rightCells]
     }
-    get allBoxes() {
+    get allCells() {
       return [...this.leftCells, ...this.rightCells]
     }
-    drawCopy() {
-      const allPos = this.allBoxes.map(c => {
+    getPositions(cells) {
+      const positions = cells.map(c => {
         const { left, top } = c.el.getBoundingClientRect()
         return { x: Math.round(left), y: Math.round(top) }
       })
-      allPos.sort((a, b) => a.x - b.x)
-      const x = allPos[0].x
-      const w = allPos[allPos.length - 1].x - x + 10
+      positions.sort((a, b) => a.x - b.x)
+      const x = positions[0].x
+      const w = positions[positions.length - 1].x - x + 10
 
-      allPos.sort((a, b) => a.y - b.y)
-      const y = allPos[0].y
-      const h = allPos[allPos.length - 1].y - y + 10
+      positions.sort((a, b) => a.y - b.y)
+      const y = positions[0].y
+      const h = positions[positions.length - 1].y - y + 10
 
+      return {
+        w,
+        h,
+        x,
+        y,
+        positions,
+      }
+    }
+    drawLayer(cells) {
+      const { w, h, x, y, positions } = this.getPositions(cells)
+      return new Canvas({
+        w,
+        h,
+        fill: null,
+        cells: positions.map(c => {
+          return {
+            x: (c.x - x) / 10,
+            y: (c.y - y) / 10,
+          }
+        }),
+        imgPos: { x, y },
+      })
+    }
+    createAnimationDisplay() {
+      this.layer1LeftImg = this.drawLayer(this.layer1.leftCells)
+      this.layer2LeftImg = this.drawLayer(this.layer2.leftCells)
+      const { w, h } = this.getPositions(this.allCells)
+
+      this.animationDisplay = Object.assign(document.createElement('div'), {
+        className: 'invader-display',
+        style: `
+          width: ${w}px;
+          height: ${h}px;
+        `,
+      })
+      wrapper.appendChild(this.animationDisplay)
+      const { left, top } = this.el.getBoundingClientRect()
+
+      data.animationConfig = {
+        w,
+        h,
+        dataUrls: {
+          layer1: this.layer1LeftImg.el.toDataURL(),
+          layer2: this.layer2LeftImg.el.toDataURL(),
+        },
+        layer1Left: {
+          x: this.layer1LeftImg.imgPos.x - left + 10,
+          y: this.layer1LeftImg.imgPos.y - top + 20,
+        },
+        layer2Left: {
+          x: this.layer2LeftImg.imgPos.x - left + 10,
+          y: this.layer2LeftImg.imgPos.y - top + 20,
+        },
+        layer1Right: {
+          x: this.layer1LeftImg.imgPos.x - left,
+          y: this.layer1LeftImg.imgPos.y - top + 20,
+        },
+        layer2Right: {
+          x: this.layer2LeftImg.imgPos.x - left,
+          y: this.layer2LeftImg.imgPos.y - top + 20,
+        },
+      }
+
+      const { layer1Left, layer2Left, layer1Right, layer2Right } =
+        data.animationConfig
+
+      this.animationDisplay.innerHTML = `
+        <div class="body layer1">
+          <div class="left" style="left: ${layer1Left.x}px; top: ${layer1Left.y}px;"></div>
+          <div class="right" style="right: ${layer1Right.x}px; top: ${layer1Right.y}px; transform: scale(-1, 1);"></div>
+        </div>
+        <div class="body layer2">
+          <div class="left" style="left: ${layer2Left.x}px; top: ${layer2Left.y}px;"></div>
+          <div class="right" style="right: ${layer2Right.x}px; top: ${layer2Right.y}px; transform: scale(-1, 1);"></div>
+        </div>
+      `
+
+      const lefts = this.animationDisplay.querySelectorAll('.left')
+      const rights = this.animationDisplay.querySelectorAll('.right')
+      lefts[0].appendChild(this.layer1LeftImg.img)
+      lefts[1].appendChild(this.layer2LeftImg.img)
+      rights[0].appendChild(this.layer1LeftImg.img.cloneNode())
+      rights[1].appendChild(this.layer2LeftImg.img.cloneNode())
+    }
+    drawOnCanvas() {
       this.data = `${this.layer1.leftCells
         .map(c => `${c.config.x}.${c.config.y}`)
         .join(',')}|${this.layer2.leftCells
         .map(c => `${c.config.x}.${c.config.y}`)
         .join(',')}`
+
+      const { w, h, x, y, positions } = this.getPositions(this.allCells)
 
       Object.assign(this.el.style, {
         width: `${w}px`,
@@ -272,7 +357,7 @@ function init() {
         w: w + 40,
         h: h + 40,
         container: this.el,
-        cells: allPos.map(c => {
+        cells: positions.map(c => {
           return {
             x: (c.x - x) / 10 + 2,
             y: (c.y - y) / 10 + 2,
@@ -280,19 +365,29 @@ function init() {
         }),
       })
 
+      const offset = y - data.canvas.img.getBoundingClientRect().top
+      data.canvas.img.style.top = `${offset - 40}px`
+
+      this.createAnimationDisplay()
+
       configInput.value = this.data
       dataUrlInput.value = data.canvas.el.toDataURL()
       if (this.save) data.saveData(configInput.value, dataUrlInput.value)
-
-      const offset = y - data.canvas.img.getBoundingClientRect().top
-      data.canvas.img.style.top = `${offset - 40}px`
     }
   }
 
-  // two segments can be animated separately
-
-  // textarea.value = `1.0,0.2,2.0,1.2,0.0,0.1,2.1,0.0,1.2,1.1,1.2,0.2,2.1,2.0,1.2,0.1,0.1,1.0,2.1,2.1,1.0,2.2,0.1,2.0,1.0,0.1,0.2,0.1,2.1,0.2,2.2,2.1,2.2,0.0,2.1,1.0,0.0,2.1,0.0,2.2,0.0,0.0,1.2,0.2,0.0,2.0,1.1,0.0,1.1,1.0,1.2,2.1,1.0,1.1,0.0,1.1,1.1,1.0,0.2,1.0,1.0,0.0,1.2,0.0,2.1,2.1,1.0,2.1,1.0,0.0,1.1,1.0,2.0,2.1,1.1,2.2,0.2,2.0,1.0,1.0,2.2,2.2,0.1,2.1,0.2,0.0,2.2,1.1,2.0,2.1,1.0,2.1,1.2,2.0,0.2,2.2,0.1,0.0,2.2,1.1|0.0,2.2,2.2,0.1,2.2,1.0,2.0,2.0,1.2,1.2,1.2,2.1,0.1,1.0,0.0,1.1,0.0,2.0,0.1,0.1,2.2,1.1,1.0,0.0,0.0,1.2,2.1,1.2,2.2,0.1,1.1,2.0,1.2,1.1,1.0,2.1,0.2,0.1,1.0,1.2,0.0,2.2,2.0,1.2,0.1,0.2,0.1,1.0,0.2,2.1,0.1,0.2,1.2,2.2,1.1,0.2,1.0,0.2,0.1,1.1,0.1,2.1,1.1,1.1,1.0,0.1,0.0,0.1,2.0,1.2,2.1,2.2,1.0,2.2,0.0,1.2,2.2,1.1,0.0,2.2,0.2,2.0,0.2,1.0,1.2,0.2,0.1,1.2,2.0,1.0,1.0,1.1,0.0,2.0,2.2,1.0,0.2,0.0,0.0,0.2`
-  data.invader = new Invader()
+  const generate = ({ save }) => {
+    if (data.canvas) {
+      data.canvas.el.remove()
+      data.canvas = null
+    }
+    if (data.invader) {
+      if (data.invader.el) data.invader.el.remove()
+      if (data.invader.animationDisplay) data.invader.animationDisplay.remove()
+      data.invader = null
+    }
+    data.invader = new Invader({ save })
+  }
 
   downloadBtn.addEventListener('click', () => {
     if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
@@ -302,28 +397,21 @@ function init() {
     link.click()
   })
 
+  animateBtn.addEventListener('click', () => {
+    if (data.invader.animationDisplay) {
+      data.invader.animationDisplay.classList.toggle('animate')
+      data.invader.el.classList.toggle('hide')
+    }
+  })
+
   document.querySelectorAll('.copy').forEach(b => {
     b.addEventListener('click', () => {
-      const textarea = document.querySelector(
-        `textarea[data-id="${b.dataset.id}"]`,
-      )
-      textarea.select()
-      textarea.setSelectionRange(0, 999999) // For mobile devices
+      const input = document.querySelector(`input[data-id="${b.dataset.id}"]`)
+      input.select()
+      input.setSelectionRange(0, 999999) // For mobile devices
       document.execCommand('copy')
     })
   })
-
-  const generate = ({ save }) => {
-    if (data.canvas) {
-      data.canvas.el.remove()
-      data.canvas = null
-    }
-    if (data.invader) {
-      data.invader.el.remove()
-      data.invader = null
-    }
-    data.invader = new Invader({ save })
-  }
 
   document
     .querySelector('.generate-from-code')
@@ -332,10 +420,12 @@ function init() {
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''
     dataUrlInput.value = ''
-    downloadBtn.disabled = true
+    ;[downloadBtn, animateBtn].forEach(b => (b.disabled = true))
     data.config = { layer1: [], layer2: [] }
     generate({ save: true })
   })
+
+  data.invader = new Invader()
 }
 
 window.addEventListener('DOMContentLoaded', init)

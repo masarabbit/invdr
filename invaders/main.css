@@ -94,7 +94,7 @@ canvas {
   padding-bottom: 30px;
 }
 
-.generated-image {
+.image {
   position: absolute;
   background-size: cover;
   background-repeat: no-repeat;
@@ -111,8 +111,19 @@ canvas {
   }
 }
 
-/* .animate .layer1 {
-  animation: animate-layer1 2s infinite steps(2);
+/* animation */
+
+.invader-display {
+  position: absolute;
+  opacity: 0;
+}
+
+.invader-display.animate {
+  opacity: 1;
+}
+
+.animate .layer1 {
+  animation: animate-layer1 1.5s infinite steps(2);
 }
 
 @keyframes animate-layer1 {
@@ -126,7 +137,7 @@ canvas {
 }
 
 .animate .layer2 {
-  animation: animate-layer2 2s infinite steps(2);
+  animation: animate-layer2 1.5s infinite steps(2);
 }
 
 @keyframes animate-layer2 {
@@ -140,7 +151,7 @@ canvas {
 }
 
 .animate .left {
-  animation: animate-left 2s infinite steps(2);
+  animation: animate-left 1.5s infinite steps(2);
 }
 
 @keyframes animate-left {
@@ -154,18 +165,18 @@ canvas {
 }
 
 .animate .right {
-  animation: animate-right 2s infinite steps(2);
+  animation: animate-right 1.5s infinite steps(2);
 }
 
 @keyframes animate-right {
   0%,
   100% {
-    transform: translateX(10px);
+    transform: translateX(10px) scale(-1, 1);
   }
   50% {
-    transform: translateX(-10px);
+    transform: translateX(-10px) scale(-1, 1);
   }
-} */
+}
 
 input {
   border: 0;
@@ -187,4 +198,8 @@ input:placeholder-shown + button {
 
 section {
   display: flex;
+}
+
+.hide {
+  opacity: 0;
 }

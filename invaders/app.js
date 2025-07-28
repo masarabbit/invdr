@@ -7,6 +7,36 @@ function init() {
   const dataUrlInput = document.querySelector('input[data-id="data-url"]')
   const randomN = max => Math.ceil(Math.random() * max)
 
+  const configKey = {
+    '00': 1,
+    '01': 2,
+    '02': 3,
+    10: 4,
+    11: 5,
+    12: 6,
+    20: 7,
+    21: 8,
+    22: 9,
+  }
+  const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
+
+  const getDataUrl = el => el.toDataURL().split(',')[1]
+
+  // convert from old config to new one
+  // const convert = config => {
+  //   return config
+  //     .split('|')
+  //     .map(d => {
+  //       return d
+  //         .split(',')
+  //         .map(c => {
+  //           return configKey[c.replace('.', '')]
+  //         })
+  //         .join('')
+  //     })
+  //     .join('0')
+  // }
+
   const data = {
     canvas: null,
     invader: null,
@@ -27,7 +57,10 @@ function init() {
         animationConfig: this.animationConfig,
         name: new Array(3 + randomN(7))
           .fill('')
-          .reduce(a => (a += 'aiueoxyzkbraiueopt'[randomN(17)]), ''),
+          .reduce(
+            a => (a += 'abcdefghijklmnopqrstuvwxyzaiueoyz'[randomN(32)]),
+            '',
+          ),
       })
       localStorage.setItem(this.saveDataName, JSON.stringify(this.savedData))
     },
@@ -231,24 +264,24 @@ function init() {
       return [...this.leftCells, ...this.rightCells]
     }
     readConfig() {
-      const config = configInput.value.split('|')
+      const config = configInput.value.split('0')
       data.config = {
-        layer1: config[0].split(',').map(c => {
-          const indexes = c.split('.')
+        layer1: config[0].split('').map(c => {
+          const indexes = decodeKey[+c - 1]
           return { x: indexes[0], y: indexes[1] }
         }),
-        layer2: config[1].split(',').map(c => {
-          const indexes = c.split('.')
+        layer2: config[1].split('').map(c => {
+          const indexes = decodeKey[+c - 1]
           return { x: indexes[0], y: indexes[1] }
         }),
       }
     }
     generateConfig() {
       this.generatedConfig = `${this.layer1.leftCells
-        .map(c => `${c.config.x}.${c.config.y}`)
-        .join(',')}|${this.layer2.leftCells
-        .map(c => `${c.config.x}.${c.config.y}`)
-        .join(',')}`
+        .map(c => configKey[`${c.config.x}${c.config.y}`])
+        .join('')}0${this.layer2.leftCells
+        .map(c => configKey[`${c.config.x}${c.config.y}`])
+        .join('')}`
     }
     getPositions(cells) {
       const positions = cells.map(c => {
@@ -305,7 +338,11 @@ function init() {
         w,
         h,
         layer1: {
-          dataUrl: this.layer1LeftImg.el.toDataURL(),
+          dataUrl: getDataUrl(this.layer1LeftImg.el),
+          size: {
+            w: this.layer1LeftImg.w,
+            h: this.layer1LeftImg.h,
+          },
           left: {
             x: this.layer1LeftImg.imgPos.x - left + 10,
             y: this.layer1LeftImg.imgPos.y - top + 20,
@@ -316,7 +353,11 @@ function init() {
           },
         },
         layer2: {
-          dataUrl: this.layer2LeftImg.el.toDataURL(),
+          dataUrl: getDataUrl(this.layer2LeftImg.el),
+          size: {
+            w: this.layer2LeftImg.w,
+            h: this.layer2LeftImg.h,
+          },
           left: {
             x: this.layer2LeftImg.imgPos.x - left + 10,
             y: this.layer2LeftImg.imgPos.y - top + 20,
@@ -376,7 +417,7 @@ function init() {
       this.createAnimationDisplay()
 
       configInput.value = this.generatedConfig
-      dataUrlInput.value = data.canvas.el.toDataURL()
+      dataUrlInput.value = getDataUrl(data.canvas.el)
       if (this.save) data.saveData(configInput.value, dataUrlInput.value)
     }
   }

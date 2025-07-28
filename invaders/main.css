@@ -35,12 +35,6 @@
   animation: move-in forwards 0.2s, color-change forwards 2s;
 }
 
-.left,
-.right {
-  position: absolute;
-  margin: -20px 0 0 -10px;
-}
-
 @keyframes move-in {
   0% {
     transform: translate(var(--x1), var(--y1));
@@ -108,73 +102,6 @@ canvas {
   }
   100% {
     opacity: 1;
-  }
-}
-
-/* animation */
-
-.invader-display {
-  position: absolute;
-  opacity: 0;
-}
-
-.invader-display.animate {
-  opacity: 1;
-}
-
-.animate .layer1 {
-  animation: animate-layer1 1.5s infinite steps(2);
-}
-
-@keyframes animate-layer1 {
-  0%,
-  100% {
-    transform: translateY(-10px);
-  }
-  50% {
-    transform: translateY(10px);
-  }
-}
-
-.animate .layer2 {
-  animation: animate-layer2 1.5s infinite steps(2);
-}
-
-@keyframes animate-layer2 {
-  0%,
-  100% {
-    transform: translateY(10px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate .left {
-  animation: animate-left 1.5s infinite steps(2);
-}
-
-@keyframes animate-left {
-  0%,
-  100% {
-    transform: translateX(-10px);
-  }
-  50% {
-    transform: translateX(10px);
-  }
-}
-
-.animate .right {
-  animation: animate-right 1.5s infinite steps(2);
-}
-
-@keyframes animate-right {
-  0%,
-  100% {
-    transform: translateX(10px) scale(-1, 1);
-  }
-  50% {
-    transform: translateX(-10px) scale(-1, 1);
   }
 }
 

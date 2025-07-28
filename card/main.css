@@ -45,7 +45,7 @@
 
 .card {
   position: absolute;
-  background-color: #fff;
+  background-color: #1b0126;
   will-change: transform;
   transform: rotateX(var(--x)) rotateY(var(--y));
   transition: 0.1s;

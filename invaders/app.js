@@ -210,19 +210,7 @@ function init() {
         save: true,
         ...props,
       })
-      if (configInput.value) {
-        const invaderData = configInput.value.split('|')
-        data.config = {
-          layer1: invaderData[0].split(',').map(c => {
-            const indexes = c.split('.')
-            return { x: indexes[0], y: indexes[1] }
-          }),
-          layer2: invaderData[1].split(',').map(c => {
-            const indexes = c.split('.')
-            return { x: indexes[0], y: indexes[1] }
-          }),
-        }
-      }
+      if (configInput.value) this.readConfig()
       this.growthEnd = 30 + randomN(70)
       this.el = Object.assign(document.createElement('div'), {
         className: 'invader',
@@ -241,6 +229,26 @@ function init() {
     }
     get allCells() {
       return [...this.leftCells, ...this.rightCells]
+    }
+    readConfig() {
+      const config = configInput.value.split('|')
+      data.config = {
+        layer1: config[0].split(',').map(c => {
+          const indexes = c.split('.')
+          return { x: indexes[0], y: indexes[1] }
+        }),
+        layer2: config[1].split(',').map(c => {
+          const indexes = c.split('.')
+          return { x: indexes[0], y: indexes[1] }
+        }),
+      }
+    }
+    generateConfig() {
+      this.generatedConfig = `${this.layer1.leftCells
+        .map(c => `${c.config.x}.${c.config.y}`)
+        .join(',')}|${this.layer2.leftCells
+        .map(c => `${c.config.x}.${c.config.y}`)
+        .join(',')}`
     }
     getPositions(cells) {
       const positions = cells.map(c => {
@@ -296,39 +304,40 @@ function init() {
       data.animationConfig = {
         w,
         h,
-        dataUrls: {
-          layer1: this.layer1LeftImg.el.toDataURL(),
-          layer2: this.layer2LeftImg.el.toDataURL(),
+        layer1: {
+          dataUrl: this.layer1LeftImg.el.toDataURL(),
+          left: {
+            x: this.layer1LeftImg.imgPos.x - left + 10,
+            y: this.layer1LeftImg.imgPos.y - top + 20,
+          },
+          right: {
+            x: this.layer1LeftImg.imgPos.x - left,
+            y: this.layer1LeftImg.imgPos.y - top + 20,
+          },
         },
-        layer1Left: {
-          x: this.layer1LeftImg.imgPos.x - left + 10,
-          y: this.layer1LeftImg.imgPos.y - top + 20,
-        },
-        layer2Left: {
-          x: this.layer2LeftImg.imgPos.x - left + 10,
-          y: this.layer2LeftImg.imgPos.y - top + 20,
-        },
-        layer1Right: {
-          x: this.layer1LeftImg.imgPos.x - left,
-          y: this.layer1LeftImg.imgPos.y - top + 20,
-        },
-        layer2Right: {
-          x: this.layer2LeftImg.imgPos.x - left,
-          y: this.layer2LeftImg.imgPos.y - top + 20,
+        layer2: {
+          dataUrl: this.layer2LeftImg.el.toDataURL(),
+          left: {
+            x: this.layer2LeftImg.imgPos.x - left + 10,
+            y: this.layer2LeftImg.imgPos.y - top + 20,
+          },
+          right: {
+            x: this.layer2LeftImg.imgPos.x - left,
+            y: this.layer2LeftImg.imgPos.y - top + 20,
+          },
         },
       }
 
-      const { layer1Left, layer2Left, layer1Right, layer2Right } =
-        data.animationConfig
+      const { layer1, layer2 } = data.animationConfig
 
       this.animationDisplay.innerHTML = `
         <div class="body layer1">
-          <div class="left" style="left: ${layer1Left.x}px; top: ${layer1Left.y}px;"></div>
-          <div class="right" style="right: ${layer1Right.x}px; top: ${layer1Right.y}px; transform: scale(-1, 1);"></div>
+          <div class="left" style="left: ${layer1.left.x}px; top: ${layer1.left.y}px;"></div>
+          <div class="right" style="right: ${layer1.right.x}px; top: ${layer1.right.y}px; transform: scale(-1, 1);"></div>
         </div>
         <div class="body layer2">
-          <div class="left" style="left: ${layer2Left.x}px; top: ${layer2Left.y}px;"></div>
-          <div class="right" style="right: ${layer2Right.x}px; top: ${layer2Right.y}px; transform: scale(-1, 1);"></div>
+          <div class="left" style="left: ${layer2.left.x}px; top: ${layer2.left.y}px;"></div>
+          <div class="right" style="right: ${layer2.right.x}px; top: ${layer2.right.y}px; transform: scale(-1, 1);"></div>
         </div>
       `
 
@@ -340,11 +349,7 @@ function init() {
       rights[1].appendChild(this.layer2LeftImg.img.cloneNode())
     }
     drawOnCanvas() {
-      this.data = `${this.layer1.leftCells
-        .map(c => `${c.config.x}.${c.config.y}`)
-        .join(',')}|${this.layer2.leftCells
-        .map(c => `${c.config.x}.${c.config.y}`)
-        .join(',')}`
+      this.generateConfig()
 
       const { w, h, x, y, positions } = this.getPositions(this.allCells)
 
@@ -370,7 +375,7 @@ function init() {
 
       this.createAnimationDisplay()
 
-      configInput.value = this.data
+      configInput.value = this.generatedConfig
       dataUrlInput.value = data.canvas.el.toDataURL()
       if (this.save) data.saveData(configInput.value, dataUrlInput.value)
     }

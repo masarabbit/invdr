@@ -333,6 +333,7 @@ function init() {
       })
       wrapper.appendChild(this.animationDisplay)
       const { left, top } = this.el.getBoundingClientRect()
+      const offset = { x: Math.round(left), y: Math.round(top) }
 
       data.animationConfig = {
         w,
@@ -344,12 +345,12 @@ function init() {
             h: this.layer1LeftImg.h,
           },
           left: {
-            x: this.layer1LeftImg.imgPos.x - left + 10,
-            y: this.layer1LeftImg.imgPos.y - top + 20,
+            x: this.layer1LeftImg.imgPos.x - offset.x + 10,
+            y: this.layer1LeftImg.imgPos.y - offset.y + 20,
           },
           right: {
-            x: this.layer1LeftImg.imgPos.x - left,
-            y: this.layer1LeftImg.imgPos.y - top + 20,
+            x: this.layer1LeftImg.imgPos.x - offset.x,
+            y: this.layer1LeftImg.imgPos.y - offset.y + 20,
           },
         },
         layer2: {
@@ -359,12 +360,12 @@ function init() {
             h: this.layer2LeftImg.h,
           },
           left: {
-            x: this.layer2LeftImg.imgPos.x - left + 10,
-            y: this.layer2LeftImg.imgPos.y - top + 20,
+            x: this.layer2LeftImg.imgPos.x - offset.x + 10,
+            y: this.layer2LeftImg.imgPos.y - offset.y + 20,
           },
           right: {
-            x: this.layer2LeftImg.imgPos.x - left,
-            y: this.layer2LeftImg.imgPos.y - top + 20,
+            x: this.layer2LeftImg.imgPos.x - offset.x,
+            y: this.layer2LeftImg.imgPos.y - offset.y + 20,
           },
         },
       }
@@ -461,7 +462,7 @@ function init() {
 
   document
     .querySelector('.generate-from-code')
-    .addEventListener('click', () => generate({ save: false }))
+    .addEventListener('click', () => generate({ save: true }))
 
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''

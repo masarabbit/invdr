@@ -91,5 +91,5 @@ window.addEventListener('DOMContentLoaded', () => {
     invader.el.appendChild(
       createAnimationDisplay(invader.config.animationConfig),
     )
-  }, 10 * 1000)
+  }, 8 * 1000)
 })

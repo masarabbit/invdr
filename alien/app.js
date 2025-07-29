@@ -11,10 +11,10 @@ window.addEventListener('DOMContentLoaded', () => {
           innerHTML:
             props.anchors ||
             `
-            <div class="anchor top"></div>
-            <div class="anchor left"></div>
-            <div class="anchor right"></div>
-            <div class="anchor bottom"></div>
+            <div class="anchor top" data-dir="top"></div>
+            <div class="anchor left" data-dir="left"></div>
+            <div class="anchor right" data-dir="right"></div>
+            <div class="anchor bottom" data-dir="bottom"></div>
           `,
           style: `
              width: ${props.w || 80}px;
@@ -29,12 +29,18 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       if (props?.container) props.container.appendChild(this.el)
       // this.setProperties()
+      this.el.setAttribute('test', this.connectionDir)
       this.setAnchors()
+      // console.log(this.container.dataset.dir)
     }
     setAnchors() {
       ;['top', 'left', 'right', 'bottom'].forEach(dir => {
-        this[dir] = this.el.querySelector(`.${dir}`)
+        this[dir] = this.el.querySelector(`[data-dir='${dir}']`)
       })
+    }
+    get connectionDir() {
+      if (!this?.container?.dataset?.dir) return 'test'
+      return this.container.dataset.dir
     }
     // setProperties() {
     //   Object.keys(this.properties).forEach(p => {

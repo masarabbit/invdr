@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <script type="module" src="scripts/gallery.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../main.css" />
+    <script type="module" src="app.js" charset="utf-8"></script>
     <title>invaders - gallery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -26,29 +26,18 @@
     }
 
     .thumbnail {
-      width: 80px;
-      height: auto;
       image-rendering: pixelated;
     }
 
     .img-hidden .thumbnail {
-      display: none;
+      opacity: 0;
     }
 
     .invader-display.animate {
-      left: 0;
+      position: absolute;
       top: 0;
       opacity: 1;
-      box-shadow: 0 0 0 1px hotpink;
       image-rendering: pixelated;
-    }
-    .test-display {
-      position: absolute;
-      border: 1px solid red;
-      width: 100%;
-      height: 100vh;
-      top: 0;
-      left: 0;
     }
   </style>
   <body>
@@ -61,6 +50,5 @@
     <div class="sign">
       by masahito / <a href="http://www.ma5a.com/">ma5a.com</a>
     </div>
-    <div class="test-display"></div>
   </body>
 </html>

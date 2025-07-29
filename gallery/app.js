@@ -1,8 +1,9 @@
-import data from './data.js'
+import data from 'data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
   const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
+  const factor = 6
 
   document.querySelector('.wrapper').innerHTML = invaderData.reduce((a, i) => {
     if (!i.dataUrl) return a
@@ -12,9 +13,13 @@ window.addEventListener('DOMContentLoaded', () => {
       <a class="thumbnail-link" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
         i.dataUrl,
       )}">
-        <img class="thumbnail" src="data:image/png;base64,${i.dataUrl}" alt="${
-        i.name || 'unknown'
-      }">
+        <img 
+          class="thumbnail" src="data:image/png;base64,${i.dataUrl}" 
+          alt="${i.name || 'unknown'}"
+          style="width: ${i.imgConfig.size.w * factor}px; height: ${
+        i.imgConfig.size.h * factor
+      }px"
+        >
         <p>${i.name || 'unknown'}</p>
       </a>`
     )
@@ -36,51 +41,57 @@ window.addEventListener('DOMContentLoaded', () => {
       <img 
         src="data:image/png;base64,${dataUrl}"
         style="
-          width: ${w}px;
-          height: ${h}px;
+          width: ${w * factor}px;
+          height: ${h * factor}px;
         "
       />
     `
   }
 
   const createAnimationDisplay = config => {
-    const { layer1, layer2, w, h } = config
-    console.log('check', w * (80 / w), w)
-    const factor = 40 / w // TODO this is not quite right
-    return Object.assign(document.createElement('div'), {
-      className: 'invader-display animate',
+    const {
+      layer1,
+      layer2,
+      size: { w, h },
+    } = config
+
+    const animation = Object.assign(document.createElement('div'), {
+      className: `invader-display animate ${w}`,
       style: `
-        width: ${w}px;
-        height: ${h}px;
-        transform: scale(${1 * factor});
+        width: ${w * factor}px;
+        height: ${h * factor}px;
       `,
       innerHTML: `
-        <div class="body layer1">
-          <div class="left" style="left: ${layer1.left.x}px; top: ${
-        layer1.left.y
+        <div class="body layer1"> 
+          <div class="left" style="left: ${layer1.left.x * factor}px; top: ${
+        layer1.left.y * factor
       }px;">
             ${createImg(layer1)}
           </div>
-          <div class="right" style="right: ${layer1.right.x}px; top: ${
-        layer1.right.y
+          <div class="right" style="right: ${layer1.right.x * factor}px; top: ${
+        layer1.right.y * factor
       }px; transform: scale(-1, 1);">
             ${createImg(layer1)}
           </div>
         </div>
         <div class="body layer2">
-          <div class="left" style="left: ${layer2.left.x}px; top: ${
-        layer2.left.y
+          <div class="left" style="left: ${layer2.left.x * factor}px; top: ${
+        layer2.left.y * factor
       }px;">
             ${createImg(layer2)}
           </div>
-          <div class="right" style="right: ${layer2.right.x}px; top: ${
-        layer2.right.y
+          <div class="right" style="right: ${layer2.right.x * factor}px; top: ${
+        layer2.right.y * factor
       }px; transform: scale(-1, 1);">
             ${createImg(layer2)}
           </div>
         </div>
       `,
     })
+
+    animation.style.setProperty('--d', `${factor}px`)
+
+    return animation
   }
 
   setInterval(() => {
@@ -89,11 +100,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const currentInvader = invader.el
     currentInvader.classList.add('img-hidden')
-    const animation = createAnimationDisplay(invader.config.animationConfig)
-    document.querySelector('.test-display').appendChild(animation)
+    const animation = createAnimationDisplay(invader.config.imgConfig)
+    invader.el.appendChild(animation)
     setTimeout(() => {
-      // currentInvader.el.classList.remove('img-hidden')
+      currentInvader.classList.remove('img-hidden')
       animation.remove()
     }, 8 * 1000)
   }, 4 * 1000)
+  // shouldn't be translated 10x anymore, because cell size isn't 10px
 })

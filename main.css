@@ -60,22 +60,26 @@ a:hover {
   text-decoration: underline;
 }
 
+.invader {
+  --d: 10px;
+}
+
 .left,
 .right {
   position: absolute;
-  margin: -20px 0 0 -10px;
+  margin: calc(-2 * var(--d)) 0 0 calc(-1 * var(--d));
 }
 
 /* animation */
 
 .invader-display {
   position: absolute;
-  opacity: 0;
+  /* opacity: 0; */
+  --d: 10px;
 }
 
 .invader-display.animate {
   opacity: 1;
-  box-shadow: 0 0 0 1px hotpink;
 }
 
 .animate .layer1 {
@@ -85,10 +89,10 @@ a:hover {
 @keyframes animate-layer1 {
   0%,
   100% {
-    transform: translateY(-10px);
+    transform: translateY(calc(var(--d) * -1));
   }
   50% {
-    transform: translateY(10px);
+    transform: translateY(var(--d));
   }
 }
 
@@ -99,10 +103,10 @@ a:hover {
 @keyframes animate-layer2 {
   0%,
   100% {
-    transform: translateY(10px);
+    transform: translateY(var(--d));
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(calc(var(--d) * -1));
   }
 }
 
@@ -113,10 +117,10 @@ a:hover {
 @keyframes animate-left {
   0%,
   100% {
-    transform: translateX(-10px);
+    transform: translateX(calc(var(--d) * -1));
   }
   50% {
-    transform: translateX(10px);
+    transform: translateX(var(--d));
   }
 }
 
@@ -127,9 +131,9 @@ a:hover {
 @keyframes animate-right {
   0%,
   100% {
-    transform: translateX(10px) scale(-1, 1);
+    transform: translateX(var(--d)) scale(-1, 1);
   }
   50% {
-    transform: translateX(-10px) scale(-1, 1);
+    transform: translateX(calc(var(--d) * -1)) scale(-1, 1);
   }
 }

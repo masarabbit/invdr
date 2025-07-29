@@ -54,7 +54,7 @@ function init() {
       this.savedData.push({
         config,
         dataUrl,
-        animationConfig: this.animationConfig,
+        imgConfig: this.imgConfig,
         name: new Array(3 + randomN(7))
           .fill('')
           .reduce(
@@ -236,7 +236,6 @@ function init() {
       })
     }
   }
-
   class Invader {
     constructor(props) {
       Object.assign(this, {
@@ -316,7 +315,10 @@ function init() {
             y: (c.y - y) / 10,
           }
         }),
-        imgPos: { x, y },
+        imgPos: {
+          x: x / 10,
+          y: y / 10,
+        },
       })
     }
     createAnimation() {
@@ -332,54 +334,81 @@ function init() {
         `,
       })
       wrapper.appendChild(this.animation)
-      const { left, top } = this.el.getBoundingClientRect()
-      const offset = { x: Math.round(left), y: Math.round(top) }
+      const { left, top } = this.animation.getBoundingClientRect()
+      const rect = {
+        x: Math.round(left) / 10,
+        y: Math.round(top) / 10,
+      }
 
-      data.animationConfig = {
-        w,
-        h,
+      const offset =
+        rect.y -
+        [
+          rect.y,
+          this.layer1LeftImg.imgPos.y,
+          this.layer2LeftImg.imgPos.y,
+        ].sort()[0]
+
+      if (offset) {
+        this.layer1LeftImg.imgPos.y += offset
+        this.layer2LeftImg.imgPos.y += offset
+        this.animation.style.transform = `translateY(-${offset * 10}px)`
+      }
+
+      data.imgConfig = {
+        size: {
+          w: w / 10,
+          h: h / 10,
+        },
         layer1: {
           dataUrl: getDataUrl(this.layer1LeftImg.el),
           size: {
-            w: this.layer1LeftImg.w,
-            h: this.layer1LeftImg.h,
+            w: this.layer1LeftImg.w / 10,
+            h: this.layer1LeftImg.h / 10,
           },
           left: {
-            x: this.layer1LeftImg.imgPos.x - offset.x + 10,
-            y: this.layer1LeftImg.imgPos.y - offset.y + 20,
+            x: this.layer1LeftImg.imgPos.x - rect.x + 1,
+            y: this.layer1LeftImg.imgPos.y - rect.y + 2,
           },
           right: {
-            x: this.layer1LeftImg.imgPos.x - offset.x,
-            y: this.layer1LeftImg.imgPos.y - offset.y + 20,
+            x: this.layer1LeftImg.imgPos.x - rect.x,
+            y: this.layer1LeftImg.imgPos.y - rect.y + 2,
           },
         },
         layer2: {
           dataUrl: getDataUrl(this.layer2LeftImg.el),
           size: {
-            w: this.layer2LeftImg.w,
-            h: this.layer2LeftImg.h,
+            w: this.layer2LeftImg.w / 10,
+            h: this.layer2LeftImg.h / 10,
           },
           left: {
-            x: this.layer2LeftImg.imgPos.x - offset.x + 10,
-            y: this.layer2LeftImg.imgPos.y - offset.y + 20,
+            x: this.layer2LeftImg.imgPos.x - rect.x + 1,
+            y: this.layer2LeftImg.imgPos.y - rect.y + 2,
           },
           right: {
-            x: this.layer2LeftImg.imgPos.x - offset.x,
-            y: this.layer2LeftImg.imgPos.y - offset.y + 20,
+            x: this.layer2LeftImg.imgPos.x - rect.x,
+            y: this.layer2LeftImg.imgPos.y - rect.y + 2,
           },
         },
       }
 
-      const { layer1, layer2 } = data.animationConfig
+      const { layer1, layer2 } = data.imgConfig
 
       this.animation.innerHTML = `
         <div class="body layer1">
-          <div class="left" style="left: ${layer1.left.x}px; top: ${layer1.left.y}px;"></div>
-          <div class="right" style="right: ${layer1.right.x}px; top: ${layer1.right.y}px; transform: scale(-1, 1);"></div>
+          <div class="left" style="left: ${layer1.left.x * 10}px; top: ${
+        layer1.left.y * 10
+      }px;"></div>
+          <div class="right" style="right: ${layer1.right.x * 10}px; top: ${
+        layer1.right.y * 10
+      }px; transform: scale(-1, 1);"></div>
         </div>
         <div class="body layer2">
-          <div class="left" style="left: ${layer2.left.x}px; top: ${layer2.left.y}px;"></div>
-          <div class="right" style="right: ${layer2.right.x}px; top: ${layer2.right.y}px; transform: scale(-1, 1);"></div>
+          <div class="left" style="left: ${layer2.left.x * 10}px; top: ${
+        layer2.left.y * 10
+      }px;"></div>
+          <div class="right" style="right: ${layer2.right.x * 10}px; top: ${
+        layer2.right.y * 10
+      }px; transform: scale(-1, 1);"></div>
         </div>
       `
 
@@ -436,6 +465,9 @@ function init() {
     data.invader = new Invader({ save })
   }
 
+  // configInput.value =
+  //   '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
+
   downloadBtn.addEventListener('click', () => {
     if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
     const link = document.createElement('a')
@@ -462,7 +494,7 @@ function init() {
 
   document
     .querySelector('.generate-from-code')
-    .addEventListener('click', () => generate({ save: true }))
+    .addEventListener('click', () => generate({ save: false }))
 
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''

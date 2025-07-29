@@ -319,19 +319,19 @@ function init() {
         imgPos: { x, y },
       })
     }
-    createAnimationDisplay() {
+    createAnimation() {
       this.layer1LeftImg = this.drawLayer(this.layer1.leftCells)
       this.layer2LeftImg = this.drawLayer(this.layer2.leftCells)
       const { w, h } = this.getPositions(this.allCells)
 
-      this.animationDisplay = Object.assign(document.createElement('div'), {
+      this.animation = Object.assign(document.createElement('div'), {
         className: 'invader-display',
         style: `
           width: ${w}px;
           height: ${h}px;
         `,
       })
-      wrapper.appendChild(this.animationDisplay)
+      wrapper.appendChild(this.animation)
       const { left, top } = this.el.getBoundingClientRect()
       const offset = { x: Math.round(left), y: Math.round(top) }
 
@@ -372,7 +372,7 @@ function init() {
 
       const { layer1, layer2 } = data.animationConfig
 
-      this.animationDisplay.innerHTML = `
+      this.animation.innerHTML = `
         <div class="body layer1">
           <div class="left" style="left: ${layer1.left.x}px; top: ${layer1.left.y}px;"></div>
           <div class="right" style="right: ${layer1.right.x}px; top: ${layer1.right.y}px; transform: scale(-1, 1);"></div>
@@ -383,8 +383,8 @@ function init() {
         </div>
       `
 
-      const lefts = this.animationDisplay.querySelectorAll('.left')
-      const rights = this.animationDisplay.querySelectorAll('.right')
+      const lefts = this.animation.querySelectorAll('.left')
+      const rights = this.animation.querySelectorAll('.right')
       lefts[0].appendChild(this.layer1LeftImg.img)
       lefts[1].appendChild(this.layer2LeftImg.img)
       rights[0].appendChild(this.layer1LeftImg.img.cloneNode())
@@ -415,7 +415,7 @@ function init() {
       const offset = y - data.canvas.img.getBoundingClientRect().top
       data.canvas.img.style.top = `${offset - 40}px`
 
-      this.createAnimationDisplay()
+      this.createAnimation()
 
       configInput.value = this.generatedConfig
       dataUrlInput.value = getDataUrl(data.canvas.el)
@@ -430,7 +430,7 @@ function init() {
     }
     if (data.invader) {
       if (data.invader.el) data.invader.el.remove()
-      if (data.invader.animationDisplay) data.invader.animationDisplay.remove()
+      if (data.invader.animation) data.invader.animation.remove()
       data.invader = null
     }
     data.invader = new Invader({ save })
@@ -445,8 +445,8 @@ function init() {
   })
 
   animateBtn.addEventListener('click', () => {
-    if (data.invader.animationDisplay) {
-      data.invader.animationDisplay.classList.toggle('animate')
+    if (data.invader.animation) {
+      data.invader.animation.classList.toggle('animate')
       data.invader.el.classList.toggle('hide')
     }
   })

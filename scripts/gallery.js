@@ -3,20 +3,16 @@ import data from './data.js'
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
   const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
-  const aCopy = {
-    innerHTML: null,
-    el: null,
-  }
 
   document.querySelector('.wrapper').innerHTML = invaderData.reduce((a, i) => {
     if (!i.dataUrl) return a
     return (
       a +
       `
-      <a href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
+      <a class="thumbnail-link" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
         i.dataUrl,
       )}">
-        <img src="data:image/png;base64,${i.dataUrl}" alt="${
+        <img class="thumbnail" src="data:image/png;base64,${i.dataUrl}" alt="${
         i.name || 'unknown'
       }">
         <p>${i.name || 'unknown'}</p>
@@ -24,12 +20,14 @@ window.addEventListener('DOMContentLoaded', () => {
     )
   }, '')
 
-  const invaders = Array.from(document.querySelectorAll('a')).map((a, i) => {
-    return {
-      el: a,
-      config: invaderData[i],
-    }
-  })
+  const invaders = Array.from(document.querySelectorAll('.thumbnail-link')).map(
+    (a, i) => {
+      return {
+        el: a,
+        config: invaderData[i],
+      }
+    },
+  )
 
   console.log(invaders)
 
@@ -47,11 +45,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const createAnimationDisplay = config => {
     const { layer1, layer2, w, h } = config
+    console.log('check', w * (80 / w), w)
+    const factor = 40 / w // TODO this is not quite right
     return Object.assign(document.createElement('div'), {
       className: 'invader-display animate',
       style: `
         width: ${w}px;
         height: ${h}px;
+        transform: scale(${1 * factor});
       `,
       innerHTML: `
         <div class="body layer1">
@@ -83,13 +84,16 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   setInterval(() => {
-    if (aCopy.el) aCopy.el.innerHTML = aCopy.innerHTML
     const invader = invaders[Math.floor(Math.random() * invaders.length)]
-    if (!invader) return
-    aCopy.el = invader.el
-    aCopy.innerHTML = invader.el.innerHTML
-    invader.el.appendChild(
-      createAnimationDisplay(invader.config.animationConfig),
-    )
-  }, 8 * 1000)
+    if (!invader || invader.el.classList.contains('img-hidden')) return
+
+    const currentInvader = invader.el
+    currentInvader.classList.add('img-hidden')
+    const animation = createAnimationDisplay(invader.config.animationConfig)
+    document.querySelector('.test-display').appendChild(animation)
+    setTimeout(() => {
+      // currentInvader.el.classList.remove('img-hidden')
+      animation.remove()
+    }, 8 * 1000)
+  }, 4 * 1000)
 })

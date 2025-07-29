@@ -15,7 +15,9 @@
       padding: 40px 16px 16px;
     }
 
-    .wrapper a {
+    .thumbnail-link {
+      position: relative;
+      display: inline-block;
       margin: 8px;
       text-decoration: none;
       font-size: 0.8rem;
@@ -23,10 +25,30 @@
       color: #fff;
     }
 
-    a img {
+    .thumbnail {
       width: 80px;
       height: auto;
       image-rendering: pixelated;
+    }
+
+    .img-hidden .thumbnail {
+      display: none;
+    }
+
+    .invader-display.animate {
+      left: 0;
+      top: 0;
+      opacity: 1;
+      box-shadow: 0 0 0 1px hotpink;
+      image-rendering: pixelated;
+    }
+    .test-display {
+      position: absolute;
+      border: 1px solid red;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+      left: 0;
     }
   </style>
   <body>
@@ -39,5 +61,6 @@
     <div class="sign">
       by masahito / <a href="http://www.ma5a.com/">ma5a.com</a>
     </div>
+    <div class="test-display"></div>
   </body>
 </html>

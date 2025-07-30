@@ -3,7 +3,7 @@ import data from './data.js'
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
   const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
-  const factor = 6
+  const F = 5
 
   document.querySelector('.wrapper').innerHTML = invaderData.reduce((a, i) => {
     if (!i.dataUrl) return a
@@ -15,12 +15,10 @@ window.addEventListener('DOMContentLoaded', () => {
       )}">
         <img 
           class="thumbnail" src="data:image/png;base64,${i.dataUrl}" 
-          alt="${i.name || 'unknown'}"
-          style="width: ${i.imgConfig.size.w * factor}px; height: ${
-        i.imgConfig.size.h * factor
-      }px"
+          alt="${i.name}"
+          style="width: ${i.imgConfig.size.w * F}px;"
         >
-        <p>${i.name || 'unknown'}</p>
+        <p>${i.name}</p>
       </a>`
     )
   }, '')
@@ -41,8 +39,8 @@ window.addEventListener('DOMContentLoaded', () => {
       <img 
         src="data:image/png;base64,${dataUrl}"
         style="
-          width: ${w * factor}px;
-          height: ${h * factor}px;
+          width: ${w * F}px;
+          height: ${h * F}px;
         "
       />
     `
@@ -58,30 +56,30 @@ window.addEventListener('DOMContentLoaded', () => {
     const animation = Object.assign(document.createElement('div'), {
       className: `invader-display animate ${w}`,
       style: `
-        width: ${w * factor}px;
-        height: ${h * factor}px;
+        width: ${w * F}px;
+        height: ${h * F}px;
       `,
       innerHTML: `
         <div class="body layer1"> 
-          <div class="left" style="left: ${layer1.left.x * factor}px; top: ${
-        layer1.left.y * factor
+          <div class="left" style="left: ${layer1.left.x * F}px; top: ${
+        layer1.left.y * F
       }px;">
             ${createImg(layer1)}
           </div>
-          <div class="right" style="right: ${layer1.right.x * factor}px; top: ${
-        layer1.right.y * factor
+          <div class="right" style="right: ${layer1.right.x * F}px; top: ${
+        layer1.right.y * F
       }px; transform: scale(-1, 1);">
             ${createImg(layer1)}
           </div>
         </div>
         <div class="body layer2">
-          <div class="left" style="left: ${layer2.left.x * factor}px; top: ${
-        layer2.left.y * factor
+          <div class="left" style="left: ${layer2.left.x * F}px; top: ${
+        layer2.left.y * F
       }px;">
             ${createImg(layer2)}
           </div>
-          <div class="right" style="right: ${layer2.right.x * factor}px; top: ${
-        layer2.right.y * factor
+          <div class="right" style="right: ${layer2.right.x * F}px; top: ${
+        layer2.right.y * F
       }px; transform: scale(-1, 1);">
             ${createImg(layer2)}
           </div>
@@ -89,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
       `,
     })
 
-    animation.style.setProperty('--d', `${factor}px`)
+    animation.style.setProperty('--d', `${F}px`)
 
     return animation
   }
@@ -106,6 +104,6 @@ window.addEventListener('DOMContentLoaded', () => {
       currentInvader.classList.remove('img-hidden')
       animation.remove()
     }, 8 * 1000)
-  }, 4 * 1000)
+  }, 2 * 1000)
   // shouldn't be translated 10x anymore, because cell size isn't 10px
 })

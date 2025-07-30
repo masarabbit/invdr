@@ -13,6 +13,7 @@
       flex-wrap: wrap;
       justify-content: space-evenly;
       padding: 40px 16px 16px;
+      overflow: hidden;
     }
 
     .thumbnail-link {
@@ -30,6 +31,18 @@
       image-rendering: pixelated;
     }
 
+    /* .thumbnail-link::after {
+      position: absolute;
+      content: '';
+      background-color: rgb(62, 147, 213);
+      width: 120%;
+      height: 120%;
+      top: -10%;
+      left: -10%;
+      z-index: 10;
+      mix-blend-mode: multiply;
+    } */
+
     .img-hidden .thumbnail {
       opacity: 0;
     }
@@ -39,6 +52,7 @@
       top: 0;
       opacity: 1;
       image-rendering: pixelated;
+      /* mix-blend-mode: color-dodge; */
     }
   </style>
   <body>

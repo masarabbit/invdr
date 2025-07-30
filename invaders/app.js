@@ -183,7 +183,10 @@ function init() {
         (indexArray.length ? indexArray.length : this.body.invader.growthEnd)
       ) {
         this.split()
-      } else if (this.body.type === 'layer2') {
+      } else if (
+        this.body.type === 'layer2' &&
+        this.body.invader === data.invader
+      ) {
         setTimeout(() => {
           this.body.invader.drawOnCanvas()
         }, 2400)

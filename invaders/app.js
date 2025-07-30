@@ -337,7 +337,6 @@ window.addEventListener('DOMContentLoaded', () => {
       data.canvas = new Canvas({
         w: w + 40,
         h: h + 40,
-        container: this.el,
         cells: positions.map(c => {
           return {
             x: (c.x - x) / 10 + 2,
@@ -345,8 +344,6 @@ window.addEventListener('DOMContentLoaded', () => {
           }
         }),
       })
-      const offset = y - data.canvas.img.getBoundingClientRect().top
-      data.canvas.img.style.top = `${offset - 40}px`
 
       this.createAnimation()
       configInput.value = this.generatedConfig

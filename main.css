@@ -75,12 +75,7 @@ a:hover {
 
 .invader-display {
   position: absolute;
-  /* opacity: 0; */
   --d: 10px;
-}
-
-.invader-display.animate {
-  opacity: 1;
 }
 
 .animate .layer1 {

@@ -1,4 +1,4 @@
-import data from 'data.js'
+import data from './data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem('ma5a_nvdr_generated_data')

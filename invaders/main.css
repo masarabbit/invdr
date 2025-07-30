@@ -1,6 +1,6 @@
 .wrapper {
   position: absolute;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 200px);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -129,4 +129,8 @@ section {
 
 .hide {
   opacity: 0;
+}
+
+input[data-id='config'] {
+  border-bottom: 1px dashed #0a596b;
 }

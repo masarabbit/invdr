@@ -34,8 +34,6 @@
   content: '';
   width: 140%;
   height: 140%;
-  /* top: -20%;
-  left: -20%; */
   background-image: radial-gradient(
     rgb(30, 7, 90) 10%,
     transparent 70%,
@@ -45,7 +43,7 @@
 
 .card {
   position: absolute;
-  background-color: #1b0126;
+  background-color: var(--bg-color);
   will-change: transform;
   transform: rotateX(var(--x)) rotateY(var(--y));
   transition: 0.1s;

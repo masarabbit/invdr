@@ -24,23 +24,19 @@
 .cell {
   position: absolute;
   --cell: 10px;
-  --w: 1;
-  --h: 1;
-  width: calc(var(--w) * var(--cell));
-  height: calc(var(--h) * var(--cell));
-  --x1: 0;
-  --y1: 0;
-  --x2: 0;
-  --y2: 0;
-  animation: move-in forwards 0.2s, color-change forwards 2s;
+  width: var(--cell);
+  height: var(--cell);
+  --x: 0;
+  --y: 0;
+  animation: grow forwards 0.2s, color-change forwards 2s;
 }
 
-@keyframes move-in {
+@keyframes grow {
   0% {
-    transform: translate(var(--x1), var(--y1));
+    transform: translate(0, 0);
   }
   100% {
-    transform: translate(var(--x2), var(--y2));
+    transform: translate(var(--x), var(--y));
   }
 }
 

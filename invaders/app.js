@@ -1,49 +1,20 @@
-function init() {
+window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
   const downloadBtn = document.querySelector('.download')
   const animateBtn = document.querySelector('.animate')
   const configInput = document.querySelector('input[data-id="config"]')
   const dataUrlInput = document.querySelector('input[data-id="data-url"]')
-  const randomN = max => Math.ceil(Math.random() * max)
-
-  const configKey = {
-    '00': 1,
-    '01': 2,
-    '02': 3,
-    10: 4,
-    11: 5,
-    12: 6,
-    20: 7,
-    21: 8,
-    22: 9,
-  }
-  const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
-
+  const randomN = max => Math.floor(Math.random() * (max + 1))
   const getDataUrl = el => el.toDataURL().split(',')[1]
-
-  // convert from old config to new one
-  // const convert = config => {
-  //   return config
-  //     .split('|')
-  //     .map(d => {
-  //       return d
-  //         .split(',')
-  //         .map(c => {
-  //           return configKey[c.replace('.', '')]
-  //         })
-  //         .join('')
-  //     })
-  //     .join('0')
-  // }
+  const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
+  const configKey = decodeKey.reduce((o, n, i) => ((o[n] = i + 1), o), {})
+  const GROW_SPEED = 60
 
   const data = {
     canvas: null,
     invader: null,
-    config: {
-      layer1: [],
-      layer2: [],
-    },
+    config: { layer1: [], layer2: [] },
     saveDataName: 'ma5a_nvdr_generated_data',
     savedData: [],
     readData() {
@@ -66,10 +37,6 @@ function init() {
     },
   }
 
-  data.readData()
-
-  const randomPos = () => Math.floor(Math.random() * 3)
-
   class Canvas {
     constructor(props) {
       Object.assign(this, {
@@ -77,16 +44,10 @@ function init() {
         fill: '#1b0126',
         ...props,
       })
-      if (this.w) this.resizeCanvas()
+      this.resizeCanvas()
       this.ctx = this.el.getContext('2d')
       this.ctx.imageSmoothingEnabled = false
       this.createImg()
-    }
-    get width() {
-      return this.w / 10
-    }
-    get height() {
-      return this.h / 10
     }
     createImg() {
       this.cells.forEach(c => this.placeTile(c))
@@ -94,17 +55,14 @@ function init() {
       Object.assign(this.img, {
         className: 'image',
         src: this.el.toDataURL(),
-        style: `
-          width: ${this.w}px;
-          height: ${this.h}px;
-        `,
+        style: `width: ${this.w}px; height: ${this.h}px;`,
       })
       if (this?.container) this.container.appendChild(this.img)
       ;[downloadBtn, animateBtn].forEach(b => (b.disabled = false))
     }
     resizeCanvas(w, h) {
-      this.el.setAttribute('width', w || this.width)
-      this.el.setAttribute('height', h || w || this.height || this.width)
+      this.el.setAttribute('width', w || this.w / 10)
+      this.el.setAttribute('height', h || this.h / 10)
     }
     placeTile(cell, d = 1) {
       const { x, y } = cell
@@ -128,17 +86,14 @@ function init() {
     constructor(props) {
       Object.assign(this, {
         el: Object.assign(document.createElement('div'), {
-          className: `cell ${props.color || ''}`,
+          className: 'cell',
         }),
         ...props,
       })
       this.container.appendChild(this.el)
-      this.setProperties()
-    }
-    setProperties() {
-      Object.keys(this.properties).forEach(p => {
-        this.el.style.setProperty(`--${p}`, `${this.properties[p]}px`)
-      })
+      ;['x', 'y'].forEach(p =>
+        this.el.style.setProperty(`--${p}`, `${this.properties[p]}px`),
+      )
     }
   }
 
@@ -148,13 +103,8 @@ function init() {
       this.body.rightCells.push(this)
     }
     get properties() {
-      const { x1, x2, y1, y2 } = this.original.properties
-      return {
-        x1,
-        x2: x2 * -1,
-        y1,
-        y2,
-      }
+      const { x, y } = this.original.properties
+      return { x: x * -1, y }
     }
   }
   class mainCell extends Cell {
@@ -162,41 +112,28 @@ function init() {
       const indexArray = data?.config?.[props.body.type]
       const config = indexArray.length
         ? indexArray[props.index]
-        : {
-            x: randomPos(),
-            y: randomPos(),
-          }
+        : { x: randomN(2), y: randomN(2) }
       super({
-        properties: {
-          x1: props.x1 || 0,
-          y1: props.y1 || 0,
-          x2: directions[config.x],
-          y2: directions[config.y],
-        },
-        indexArray,
+        properties: { x: directions[config.x], y: directions[config.y] },
         config,
         ...props,
       })
       this.body.leftCells.push(this)
       if (
         this.body.leftCells.length <
-        (indexArray.length ? indexArray.length : this.body.invader.growthEnd)
+        (indexArray.length || this.body.invader.growthEnd)
       ) {
         this.split()
       } else if (
         this.body.type === 'layer2' &&
         this.body.invader === data.invader
       ) {
-        setTimeout(() => {
-          this.body.invader.drawOnCanvas()
-        }, 2400)
+        setTimeout(() => this.body.invader.drawOnCanvas(), 2400)
       }
     }
     split() {
       setTimeout(() => {
         this.child = new mainCell({
-          x1: this.x2,
-          y1: this.y2,
           container: this.el,
           body: this.body,
           index: this.index + 1,
@@ -207,7 +144,7 @@ function init() {
           body: this.body,
           index: this.index + 1,
         })
-      }, 60)
+      }, GROW_SPEED)
     }
   }
 
@@ -256,14 +193,13 @@ function init() {
         this.layer2 = new InvaderBody({ invader: this, type: 'layer2' })
       }, 1000)
     }
-    get leftCells() {
-      return [...this.layer1?.leftCells, ...this.layer2?.leftCells]
-    }
-    get rightCells() {
-      return [...this.layer1?.rightCells, ...this.layer2?.rightCells]
-    }
     get allCells() {
-      return [...this.leftCells, ...this.rightCells]
+      return [
+        ...this.layer1?.leftCells,
+        ...this.layer2?.leftCells,
+        ...this.layer1?.rightCells,
+        ...this.layer2?.rightCells,
+      ]
     }
     readConfig() {
       const config = configInput.value.split('0')
@@ -298,13 +234,7 @@ function init() {
       const y = positions[0].y
       const h = positions[positions.length - 1].y - y + 10
 
-      return {
-        w,
-        h,
-        x,
-        y,
-        positions,
-      }
+      return { w, h, x, y, positions }
     }
     drawLayer(cells) {
       const { w, h, x, y, positions } = this.getPositions(cells)
@@ -318,23 +248,17 @@ function init() {
             y: (c.y - y) / 10,
           }
         }),
-        imgPos: {
-          x: x / 10,
-          y: y / 10,
-        },
+        pos: { x: x / 10, y: y / 10 },
       })
     }
     createAnimation() {
-      this.layer1LeftImg = this.drawLayer(this.layer1.leftCells)
-      this.layer2LeftImg = this.drawLayer(this.layer2.leftCells)
+      this.layer1Img = this.drawLayer(this.layer1.leftCells)
+      this.layer2Img = this.drawLayer(this.layer2.leftCells)
       const { w, h } = this.getPositions(this.allCells)
 
       this.animation = Object.assign(document.createElement('div'), {
         className: 'invader-display',
-        style: `
-          width: ${w}px;
-          height: ${h}px;
-        `,
+        style: `width: ${w}px; height: ${h}px;`,
       })
       wrapper.appendChild(this.animation)
       const { left, top } = this.animation.getBoundingClientRect()
@@ -344,16 +268,11 @@ function init() {
       }
 
       const offset =
-        rect.y -
-        [
-          rect.y,
-          this.layer1LeftImg.imgPos.y,
-          this.layer2LeftImg.imgPos.y,
-        ].sort()[0]
+        rect.y - [rect.y, this.layer1Img.pos.y, this.layer2Img.pos.y].sort()[0]
 
       if (offset) {
-        this.layer1LeftImg.imgPos.y += offset
-        this.layer2LeftImg.imgPos.y += offset
+        this.layer1Img.pos.y += offset
+        this.layer2Img.pos.y += offset
         this.animation.style.transform = `translateY(-${offset * 10}px)`
       }
 
@@ -362,76 +281,59 @@ function init() {
           w: w / 10,
           h: h / 10,
         },
-        layer1: {
-          dataUrl: getDataUrl(this.layer1LeftImg.el),
+      }
+      ;['layer1', 'layer2'].forEach(l => {
+        data.imgConfig[l] = {
+          dataUrl: getDataUrl(this[`${l}Img`].el),
           size: {
-            w: this.layer1LeftImg.w / 10,
-            h: this.layer1LeftImg.h / 10,
+            w: this[`${l}Img`].w / 10,
+            h: this[`${l}Img`].h / 10,
           },
           left: {
-            x: this.layer1LeftImg.imgPos.x - rect.x + 1,
-            y: this.layer1LeftImg.imgPos.y - rect.y + 2,
+            x: this[`${l}Img`].pos.x - rect.x + 1,
+            y: this[`${l}Img`].pos.y - rect.y + 2,
           },
           right: {
-            x: this.layer1LeftImg.imgPos.x - rect.x,
-            y: this.layer1LeftImg.imgPos.y - rect.y + 2,
+            x: this[`${l}Img`].pos.x - rect.x,
+            y: this[`${l}Img`].pos.y - rect.y + 2,
           },
-        },
-        layer2: {
-          dataUrl: getDataUrl(this.layer2LeftImg.el),
-          size: {
-            w: this.layer2LeftImg.w / 10,
-            h: this.layer2LeftImg.h / 10,
-          },
-          left: {
-            x: this.layer2LeftImg.imgPos.x - rect.x + 1,
-            y: this.layer2LeftImg.imgPos.y - rect.y + 2,
-          },
-          right: {
-            x: this.layer2LeftImg.imgPos.x - rect.x,
-            y: this.layer2LeftImg.imgPos.y - rect.y + 2,
-          },
-        },
+        }
+      })
+
+      const animationBody = layer => {
+        const { left, right } = data.imgConfig[layer]
+        return `
+           <div class="${layer}">
+            <div class="left" style="left: ${left.x * 10}px; top: ${
+          left.y * 10
+        }px;"></div>
+            <div class="right" style="right: ${right.x * 10}px; top: ${
+          right.y * 10
+        }px; transform: scale(-1, 1);"></div>
+          </div>
+        `
       }
 
-      const { layer1, layer2 } = data.imgConfig
+      this.animation.innerHTML =
+        animationBody('layer1') + animationBody('layer2')
 
-      this.animation.innerHTML = `
-        <div class="body layer1">
-          <div class="left" style="left: ${layer1.left.x * 10}px; top: ${
-        layer1.left.y * 10
-      }px;"></div>
-          <div class="right" style="right: ${layer1.right.x * 10}px; top: ${
-        layer1.right.y * 10
-      }px; transform: scale(-1, 1);"></div>
-        </div>
-        <div class="body layer2">
-          <div class="left" style="left: ${layer2.left.x * 10}px; top: ${
-        layer2.left.y * 10
-      }px;"></div>
-          <div class="right" style="right: ${layer2.right.x * 10}px; top: ${
-        layer2.right.y * 10
-      }px; transform: scale(-1, 1);"></div>
-        </div>
-      `
-
-      const lefts = this.animation.querySelectorAll('.left')
-      const rights = this.animation.querySelectorAll('.right')
-      lefts[0].appendChild(this.layer1LeftImg.img)
-      lefts[1].appendChild(this.layer2LeftImg.img)
-      rights[0].appendChild(this.layer1LeftImg.img.cloneNode())
-      rights[1].appendChild(this.layer2LeftImg.img.cloneNode())
+      this.animation
+        .querySelectorAll('.left')
+        .forEach((el, i) => el.appendChild(this[`layer${i + 1}Img`].img))
+      this.animation
+        .querySelectorAll('.right')
+        .forEach((el, i) =>
+          el.appendChild(this[`layer${i + 1}Img`].img.cloneNode()),
+        )
     }
     drawOnCanvas() {
-      this.generateConfig()
-
       const { w, h, x, y, positions } = this.getPositions(this.allCells)
+      this.generateConfig()
 
       Object.assign(this.el.style, {
         width: `${w}px`,
         height: `${h}px`,
       })
-
       data.canvas = new Canvas({
         w: w + 40,
         h: h + 40,
@@ -443,12 +345,10 @@ function init() {
           }
         }),
       })
-
       const offset = y - data.canvas.img.getBoundingClientRect().top
       data.canvas.img.style.top = `${offset - 40}px`
 
       this.createAnimation()
-
       configInput.value = this.generatedConfig
       dataUrlInput.value = getDataUrl(data.canvas.el)
       if (this.save) data.saveData(configInput.value, dataUrlInput.value)
@@ -468,8 +368,8 @@ function init() {
     data.invader = new Invader({ save })
   }
 
-  // configInput.value =
-  //   '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
+  configInput.value =
+    '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
 
   downloadBtn.addEventListener('click', () => {
     if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
@@ -507,7 +407,6 @@ function init() {
     generate({ save: true })
   })
 
+  data.readData()
   data.invader = new Invader()
-}
-
-window.addEventListener('DOMContentLoaded', init)
+})

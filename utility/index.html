@@ -15,9 +15,12 @@
       background-color: #167b914f;
       font-size: 0.7rem;
     }
-    button {
+    btn-wrapper {
       position: relative;
       margin: 5px 12px;
+    }
+    .btn-wrapper button {
+      position: relative;
       z-index: 10;
     }
   </style>
@@ -30,7 +33,10 @@
         gallery
       </a>
     </nav>
-    <button>download</button>
+    <div class="btn-wrapper">
+      <button data-id="download">download</button>
+      <button data-id="delete">delete</button>
+    </div>
     <textarea spellcheck="false"></textarea>
     <div class="sign">
       by masahito / <a href="http://www.ma5a.com/">ma5a.com</a>

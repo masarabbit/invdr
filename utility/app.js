@@ -7,17 +7,30 @@ window.addEventListener('DOMContentLoaded', () => {
     textarea.value = JSON.stringify(data, null, 2)
     textarea.style.height = textarea.scrollHeight + 'px'
 
-    document.querySelector('button').addEventListener('click', () => {
-      const url = window.URL.createObjectURL(
-        new Blob([textarea.value], {
-          type: 'text/plain',
-        }),
-      )
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `nvdr_config_${new Date().getTime()}.txt`
-      link.click()
-    })
+    document
+      .querySelector('button[data-id="download"]')
+      .addEventListener('click', () => {
+        const url = window.URL.createObjectURL(
+          new Blob([textarea.value], {
+            type: 'text/plain',
+          }),
+        )
+        const link = document.createElement('a')
+        link.href = url
+        link.download = `nvdr_config_${new Date().getTime()}.txt`
+        link.click()
+      })
+
+    document
+      .querySelector('button[data-id="delete"]')
+      .addEventListener('click', () => {
+        if (window.confirm('Are you sure you want to delete?')) {
+          localStorage.removeItem('ma5a_nvdr_generated_data')
+          const textarea = document.querySelector('textarea')
+          textarea.value = ''
+          textarea.style.height = 'auto'
+        }
+      })
   }
 })
 

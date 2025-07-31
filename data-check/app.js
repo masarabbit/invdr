@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
+  const SAVE_DATA_NAME = 'ma5a_nvdr_generated_data'
+  const saveData = localStorage.getItem(SAVE_DATA_NAME)
 
   if (saveData) {
     const textarea = document.querySelector('textarea')
@@ -25,10 +26,21 @@ window.addEventListener('DOMContentLoaded', () => {
       .querySelector('button[data-id="delete"]')
       .addEventListener('click', () => {
         if (window.confirm('Are you sure you want to delete?')) {
-          localStorage.removeItem('ma5a_nvdr_generated_data')
-          const textarea = document.querySelector('textarea')
+          localStorage.removeItem(SAVE_DATA_NAME)
           textarea.value = ''
           textarea.style.height = 'auto'
+        }
+      })
+
+    document
+      .querySelector('button[data-id="save"]')
+      .addEventListener('click', () => {
+        if (
+          window.confirm('Are you sure you want to overwrite existing data?')
+        ) {
+          const data = JSON.parse(textarea.value)
+          const newData = JSON.stringify(data, null, 1)
+          localStorage.setItem(SAVE_DATA_NAME, newData)
         }
       })
   }

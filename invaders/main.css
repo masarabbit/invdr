@@ -7,11 +7,26 @@
   align-items: center;
 }
 
+.test-wrapper {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  align-items: start;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 0 1px hotpink;
+  pointer-events: none;
+}
+
 .invader {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* opacity: 0; */
 }
 
 .invader .body {
@@ -67,7 +82,11 @@
 }
 
 canvas {
-  position: absolute;
+  /* position: absolute; */
+  box-shadow: 0 0 0 1px cyan;
+  /* top: 10px;
+  left: 10px; */
+  margin: 10px;
 }
 
 .copy {
@@ -89,7 +108,9 @@ canvas {
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
-  animation: fade-in forwards 1s;
+  /* animation: fade-in forwards 1s; */
+  box-shadow: 0 0 0 1px hotpink;
+  opacity: 0.3;
 }
 
 @keyframes fade-in {
@@ -129,4 +150,12 @@ section {
 
 input[data-id='config'] {
   border-bottom: 1px dashed #0a596b;
+}
+
+.layer2 {
+  opacity: 0.3;
+}
+
+.layer1 {
+  opacity: 0.5;
 }

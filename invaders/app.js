@@ -9,7 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const getDataUrl = el => el.toDataURL().split(',')[1]
   const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
   const configKey = decodeKey.reduce((o, n, i) => ((o[n] = i + 1), o), {})
-  const GROW_SPEED = 60
+  const GROW_SPEED = 10
+
+  const testWrapper = document.querySelector('.test-wrapper')
 
   const data = {
     canvas: null,
@@ -41,12 +43,32 @@ window.addEventListener('DOMContentLoaded', () => {
     constructor(props) {
       Object.assign(this, {
         el: document.createElement('canvas'),
-        fill: '#1b0126',
         ...props,
       })
       this.resizeCanvas()
       this.ctx = this.el.getContext('2d')
       this.ctx.imageSmoothingEnabled = false
+    }
+    resizeCanvas(w, h) {
+      this.el.setAttribute('width', w || this.w / 10)
+      this.el.setAttribute('height', h || this.h / 10)
+    }
+    placeTile(cell, d = 1, offset = { x: 0, y: 0 }) {
+      const { x, y } = cell
+      this.ctx.fillStyle = '#fff'
+      this.ctx.fillRect((x + offset.x) * d, (y + offset.y) * d, d, d)
+    }
+    draw({ x, y, size, img }) {
+      this.ctx.drawImage(img, x, y, size.w, size.h)
+    }
+  }
+
+  class InvaderCanvas extends Canvas {
+    constructor(props) {
+      super({
+        fill: '#1b0126',
+        ...props,
+      })
       this.createImg()
     }
     createImg() {
@@ -59,15 +81,6 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       if (this?.container) this.container.appendChild(this.img)
       ;[downloadBtn, animateBtn].forEach(b => (b.disabled = false))
-    }
-    resizeCanvas(w, h) {
-      this.el.setAttribute('width', w || this.w / 10)
-      this.el.setAttribute('height', h || this.h / 10)
-    }
-    placeTile(cell, d = 1) {
-      const { x, y } = cell
-      this.ctx.fillStyle = '#fff'
-      this.ctx.fillRect(x * d, y * d, d, d)
     }
     createDownloadImg() {
       this.resizeCanvas(this.w, this.h)
@@ -97,7 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  class mirrorCell extends Cell {
+  class MirrorCell extends Cell {
     constructor(props) {
       super(props)
       this.body.rightCells.push(this)
@@ -107,7 +120,7 @@ window.addEventListener('DOMContentLoaded', () => {
       return { x: x * -1, y }
     }
   }
-  class mainCell extends Cell {
+  class MainCell extends Cell {
     constructor(props) {
       const indexArray = data?.config?.[props.body.type]
       const config = indexArray.length
@@ -133,12 +146,12 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     split() {
       setTimeout(() => {
-        this.child = new mainCell({
+        this.child = new MainCell({
           container: this.el,
           body: this.body,
           index: this.index + 1,
         })
-        this.child.mirror = new mirrorCell({
+        this.child.mirror = new MirrorCell({
           container: this.mirror.el,
           original: this.child,
           body: this.body,
@@ -163,12 +176,12 @@ window.addEventListener('DOMContentLoaded', () => {
         ...props,
       })
       this.invader.el.appendChild(this.el)
-      const cell = new mainCell({
+      const cell = new MainCell({
         container: this.el.querySelector('.left'),
         body: this,
         index: 0,
       })
-      cell.mirror = new mirrorCell({
+      cell.mirror = new MirrorCell({
         container: this.el.querySelector('.right'),
         original: cell,
         body: this,
@@ -238,7 +251,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     drawLayer(cells) {
       const { w, h, x, y, positions } = this.getPositions(cells)
-      return new Canvas({
+      return new InvaderCanvas({
         w,
         h,
         fill: null,
@@ -252,9 +265,13 @@ window.addEventListener('DOMContentLoaded', () => {
       })
     }
     createAnimation() {
-      this.layer1Img = this.drawLayer(this.layer1.leftCells)
+      this.layer1Img = this.drawLayer(this.layer1.leftCells) // maybe these needs to be downsized. Or not?
       this.layer2Img = this.drawLayer(this.layer2.leftCells)
-      const { w, h } = this.getPositions(this.allCells)
+      const { w, h, y, x } = this.getPositions(this.allCells)
+
+      const { y: y1, x: x1 } = this.getPositions(this.layer1.leftCells)
+
+      const { y: y2, x: x2 } = this.getPositions(this.layer2.leftCells)
 
       this.animation = Object.assign(document.createElement('div'), {
         className: 'invader-display',
@@ -325,6 +342,105 @@ window.addEventListener('DOMContentLoaded', () => {
         .forEach((el, i) =>
           el.appendChild(this[`layer${i + 1}Img`].img.cloneNode()),
         )
+
+      const offset1 = {
+        x: Math.abs(x1 - x) / 10,
+        y: Math.abs(y1 - y) / 10,
+      }
+      const offset2 = {
+        x: Math.abs(x2 - x) / 10,
+        y: Math.abs(y2 - y) / 10,
+      }
+
+      // frame 1
+
+      const canvas2 = new Canvas({
+        w: w * 10 + 400,
+        h: h * 10 + 400,
+      })
+
+      testWrapper.appendChild(canvas2.el)
+
+      data.canvas.cells.forEach(c => {
+        canvas2.placeTile(
+          {
+            x: c.x,
+            y: c.y,
+          },
+          10,
+        )
+      })
+
+      // frame 2
+
+      const canvas = new Canvas({
+        w: w * 10 + 400,
+        h: h * 10 + 400,
+      })
+
+      const canvas3 = new Canvas({
+        w: w * 10 + 400,
+        h: h * 10 + 400,
+      })
+
+      testWrapper.appendChild(canvas.el)
+      testWrapper.appendChild(canvas3.el)
+
+      const commonParams = [10, { x: 2, y: 2 }]
+
+      ;[
+        {
+          a: { x: -1, y: -1 },
+          b: { x: 1, y: -1 },
+          c: { x: -1, y: 1 },
+          d: { x: 1, y: 1 },
+          canvas: canvas,
+        },
+        {
+          a: { x: 1, y: 1 },
+          b: { x: -1, y: 1 },
+          c: { x: 1, y: -1 },
+          d: { x: -1, y: -1 },
+          canvas: canvas3,
+        },
+      ].forEach(aConfig => {
+        this.layer1Img.cells.forEach(c => {
+          aConfig.canvas.placeTile(
+            {
+              x: offset1.x + c.x + aConfig.a.x,
+              y: c.y + offset1.y + aConfig.a.y,
+            },
+            ...commonParams,
+          )
+        })
+        this.layer1Img.cells.forEach(c => {
+          aConfig.canvas.placeTile(
+            {
+              x: w / 10 - 1 - offset1.x - c.x + aConfig.b.x,
+              y: c.y + offset1.y + aConfig.b.y,
+            },
+            ...commonParams,
+          )
+        })
+        this.layer2Img.cells.forEach(c => {
+          aConfig.canvas.placeTile(
+            {
+              x: offset2.x + c.x + aConfig.c.x,
+              y: c.y + offset2.y + aConfig.c.y,
+            },
+            ...commonParams,
+          )
+        })
+        this.layer2Img.cells.forEach(c => {
+          aConfig.canvas.placeTile(
+            {
+              x: w / 10 - 1 - offset2.x - c.x + aConfig.d.x,
+              y: c.y + offset2.y + aConfig.d.y,
+            },
+            ...commonParams,
+          )
+        })
+      })
     }
     drawOnCanvas() {
       const { w, h, x, y, positions } = this.getPositions(this.allCells)
@@ -334,7 +450,8 @@ window.addEventListener('DOMContentLoaded', () => {
         width: `${w}px`,
         height: `${h}px`,
       })
-      data.canvas = new Canvas({
+      // create download img
+      data.canvas = new InvaderCanvas({
         w: w + 40,
         h: h + 40,
         cells: positions.map(c => {
@@ -345,9 +462,9 @@ window.addEventListener('DOMContentLoaded', () => {
         }),
       })
 
-      this.createAnimation()
       configInput.value = this.generatedConfig
       dataUrlInput.value = getDataUrl(data.canvas.el)
+      this.createAnimation()
       if (this.save) data.saveData(configInput.value, dataUrlInput.value)
     }
   }
@@ -368,6 +485,11 @@ window.addEventListener('DOMContentLoaded', () => {
   configInput.value =
     '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
 
+  // configInput.value =
+  //   '6881218343667515871596313778351428346630268124353325879649274876526523172322935'
+
+  // configInput.value =
+  //   '51213323649739187417365668232625627393395378978188531222516241136399478784838198447722126986473765097641789315211198138845589619899213477975523321449616497737969515133722692129715119823347618684224'
   downloadBtn.addEventListener('click', () => {
     if (!data.canvas.downloadImg) data.canvas.createDownloadImg()
     const link = document.createElement('a')

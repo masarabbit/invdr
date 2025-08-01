@@ -19,6 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
     config: { layer1: [], layer2: [] },
     saveDataName: 'ma5a_nvdr_generated_data',
     savedData: [],
+    animation: { frame1: null, frame2: null, frame3: null },
     readData() {
       const saveData = localStorage.getItem(this.saveDataName)
       if (saveData) this.savedData = JSON.parse(saveData)
@@ -27,7 +28,7 @@ window.addEventListener('DOMContentLoaded', () => {
       this.savedData.push({
         config,
         dataUrl,
-        imgConfig: this.imgConfig,
+        // imgConfig: this.imgConfig,
         name: new Array(3 + randomN(7))
           .fill('')
           .reduce(
@@ -50,16 +51,26 @@ window.addEventListener('DOMContentLoaded', () => {
       this.ctx.imageSmoothingEnabled = false
     }
     resizeCanvas(w, h) {
-      this.el.setAttribute('width', w || this.w / 10)
-      this.el.setAttribute('height', h || this.h / 10)
+      this.el.setAttribute('width', w || this.w)
+      this.el.setAttribute('height', h || this.h)
     }
     placeTile(cell, d = 1, offset = { x: 0, y: 0 }) {
       const { x, y } = cell
       this.ctx.fillStyle = '#fff'
       this.ctx.fillRect((x + offset.x) * d, (y + offset.y) * d, d, d)
     }
-    draw({ x, y, size, img }) {
-      this.ctx.drawImage(img, x, y, size.w, size.h)
+    // draw({ x, y, size, img }) {
+    //   this.ctx.drawImage(img, x, y, size.w, size.h)
+    // }
+    createImg(w, h) {
+      this.img = new Image()
+      Object.assign(this.img, {
+        className: 'image',
+        src: this.el.toDataURL(),
+        style: `width: ${w || this.w}px; height: ${h || this.h}px;`,
+      })
+      if (this?.container) this.container.appendChild(this.img)
+      ;[downloadBtn, animateBtn].forEach(b => (b.disabled = false))
     }
   }
 
@@ -69,27 +80,23 @@ window.addEventListener('DOMContentLoaded', () => {
         fill: '#1b0126',
         ...props,
       })
-      this.createImg()
     }
-    createImg() {
-      this.cells.forEach(c => this.placeTile(c))
-      this.img = new Image()
-      Object.assign(this.img, {
-        className: 'image',
-        src: this.el.toDataURL(),
-        style: `width: ${this.w}px; height: ${this.h}px;`,
-      })
-      if (this?.container) this.container.appendChild(this.img)
-      ;[downloadBtn, animateBtn].forEach(b => (b.disabled = false))
-    }
-    createDownloadImg() {
-      this.resizeCanvas(this.w, this.h)
+    createDownloadImg(margin = 1, d = 10) {
+      const w = (this.w + margin * 2) * d
+      const h = (this.h + margin * 2) * d
+      this.resizeCanvas(w, h)
       if (this.fill) {
         this.ctx.fillStyle = this.fill
-        this.ctx.fillRect(0, 0, this.w, this.h)
+        this.ctx.fillRect(0, 0, w, h)
       }
       this.cells.forEach(c => {
-        this.placeTile(c, 10)
+        this.placeTile(
+          {
+            x: c.x + margin,
+            y: c.y + margin,
+          },
+          d,
+        )
       })
       this.downloadImg = this.el.toDataURL()
     }
@@ -251,9 +258,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     drawLayer(cells) {
       const { w, h, x, y, positions } = this.getPositions(cells)
-      return new InvaderCanvas({
-        w,
-        h,
+      const canvas = new InvaderCanvas({
+        w: w / 10,
+        h: h / 10,
         fill: null,
         cells: positions.map(c => {
           return {
@@ -263,145 +270,127 @@ window.addEventListener('DOMContentLoaded', () => {
         }),
         pos: { x: x / 10, y: y / 10 },
       })
+      canvas.cells.forEach(c => canvas.placeTile(c))
+      canvas.createImg()
+      return canvas
     }
     createAnimation() {
-      this.layer1Img = this.drawLayer(this.layer1.leftCells) // maybe these needs to be downsized. Or not?
-      this.layer2Img = this.drawLayer(this.layer2.leftCells)
+      // this.animation = Object.assign(document.createElement('div'), {
+      //   className: 'invader-display',
+      //   style: `width: ${w}px; height: ${h}px;`,
+      // })
+      // wrapper.appendChild(this.animation)
+      // const { left, top } = this.animation.getBoundingClientRect()
+      // const rect = {
+      //   x: Math.round(left),
+      //   y: Math.round(top),
+      // }
+
+      // const offset =
+      //   rect.y - [rect.y, this.layer1Img.pos.y, this.layer2Img.pos.y].sort()[0]
+
+      // if (offset) {
+      //   this.layer1Img.pos.y += offset
+      //   this.layer2Img.pos.y += offset
+      //   this.animation.style.transform = `translateY(-${offset}px)`
+      // }
+
+      // data.imgConfig = {
+      //   size: {
+      //     w,
+      //     h,
+      //   },
+      // }
+      // ;['layer1', 'layer2'].forEach(l => {
+      //   data.imgConfig[l] = {
+      //     dataUrl: getDataUrl(this[`${l}Img`].el),
+      //     size: {
+      //       w: this[`${l}Img`].w,
+      //       h: this[`${l}Img`].h,
+      //     },
+      //     left: {
+      //       x: this[`${l}Img`].pos.x - rect.x + 1,
+      //       y: this[`${l}Img`].pos.y - rect.y + 2,
+      //     },
+      //     right: {
+      //       x: this[`${l}Img`].pos.x - rect.x,
+      //       y: this[`${l}Img`].pos.y - rect.y + 2,
+      //     },
+      //   }
+      // })
+
+      // const animationBody = layer => {
+      //   const { left, right } = data.imgConfig[layer]
+      //   return `
+      //      <div class="${layer}">
+      //       <div class="left" style="left: ${left.x * 10}px; top: ${
+      //     left.y * 10
+      //   }px;"></div>
+      //       <div class="right" style="right: ${right.x * 10}px; top: ${
+      //     right.y * 10
+      //   }px; transform: scale(-1, 1);"></div>
+      //     </div>
+      //   `
+      // }
+
+      // this.animation.innerHTML =
+      //   animationBody('layer1') + animationBody('layer2')
+
+      // this.animation
+      //   .querySelectorAll('.left')
+      //   .forEach((el, i) => el.appendChild(this[`layer${i + 1}Img`].img))
+      // this.animation
+      //   .querySelectorAll('.right')
+      //   .forEach((el, i) =>
+      //     el.appendChild(this[`layer${i + 1}Img`].img.cloneNode()),
+      //   )
+
       const { w, h, y, x } = this.getPositions(this.allCells)
 
+      this.layer1Img = this.drawLayer(this.layer1.leftCells)
       const { y: y1, x: x1 } = this.getPositions(this.layer1.leftCells)
-
-      const { y: y2, x: x2 } = this.getPositions(this.layer2.leftCells)
-
-      this.animation = Object.assign(document.createElement('div'), {
-        className: 'invader-display',
-        style: `width: ${w}px; height: ${h}px;`,
-      })
-      wrapper.appendChild(this.animation)
-      const { left, top } = this.animation.getBoundingClientRect()
-      const rect = {
-        x: Math.round(left) / 10,
-        y: Math.round(top) / 10,
-      }
-
-      const offset =
-        rect.y - [rect.y, this.layer1Img.pos.y, this.layer2Img.pos.y].sort()[0]
-
-      if (offset) {
-        this.layer1Img.pos.y += offset
-        this.layer2Img.pos.y += offset
-        this.animation.style.transform = `translateY(-${offset * 10}px)`
-      }
-
-      data.imgConfig = {
-        size: {
-          w: w / 10,
-          h: h / 10,
-        },
-      }
-      ;['layer1', 'layer2'].forEach(l => {
-        data.imgConfig[l] = {
-          dataUrl: getDataUrl(this[`${l}Img`].el),
-          size: {
-            w: this[`${l}Img`].w / 10,
-            h: this[`${l}Img`].h / 10,
-          },
-          left: {
-            x: this[`${l}Img`].pos.x - rect.x + 1,
-            y: this[`${l}Img`].pos.y - rect.y + 2,
-          },
-          right: {
-            x: this[`${l}Img`].pos.x - rect.x,
-            y: this[`${l}Img`].pos.y - rect.y + 2,
-          },
-        }
-      })
-
-      const animationBody = layer => {
-        const { left, right } = data.imgConfig[layer]
-        return `
-           <div class="${layer}">
-            <div class="left" style="left: ${left.x * 10}px; top: ${
-          left.y * 10
-        }px;"></div>
-            <div class="right" style="right: ${right.x * 10}px; top: ${
-          right.y * 10
-        }px; transform: scale(-1, 1);"></div>
-          </div>
-        `
-      }
-
-      this.animation.innerHTML =
-        animationBody('layer1') + animationBody('layer2')
-
-      this.animation
-        .querySelectorAll('.left')
-        .forEach((el, i) => el.appendChild(this[`layer${i + 1}Img`].img))
-      this.animation
-        .querySelectorAll('.right')
-        .forEach((el, i) =>
-          el.appendChild(this[`layer${i + 1}Img`].img.cloneNode()),
-        )
-
       const offset1 = {
         x: Math.abs(x1 - x) / 10,
         y: Math.abs(y1 - y) / 10,
       }
+
+      this.layer2Img = this.drawLayer(this.layer2.leftCells)
+      const { y: y2, x: x2 } = this.getPositions(this.layer2.leftCells)
       const offset2 = {
         x: Math.abs(x2 - x) / 10,
         y: Math.abs(y2 - y) / 10,
       }
 
-      // frame 1
-
-      const canvas2 = new Canvas({
-        w: w * 10 + 400,
-        h: h * 10 + 400,
+      Object.keys(data.animation).forEach(frame => {
+        data.animation[frame] = new Canvas({
+          // w: w + 20,
+          // h: h + 20,
+          w: w / 10 + 2,
+          h: h / 10 + 2,
+        })
+        testWrapper.appendChild(data.animation[frame].el)
       })
-
-      testWrapper.appendChild(canvas2.el)
 
       data.canvas.cells.forEach(c => {
-        canvas2.placeTile(
-          {
-            x: c.x,
-            y: c.y,
-          },
-          10,
-        )
+        data.animation.frame1.placeTile({
+          x: c.x,
+          y: c.y,
+        })
       })
-
-      // frame 2
-
-      const canvas = new Canvas({
-        w: w * 10 + 400,
-        h: h * 10 + 400,
-      })
-
-      const canvas3 = new Canvas({
-        w: w * 10 + 400,
-        h: h * 10 + 400,
-      })
-
-      testWrapper.appendChild(canvas.el)
-      testWrapper.appendChild(canvas3.el)
-
-      const commonParams = [10, { x: 2, y: 2 }]
-
       ;[
         {
           a: { x: -1, y: -1 },
           b: { x: 1, y: -1 },
           c: { x: -1, y: 1 },
           d: { x: 1, y: 1 },
-          canvas: canvas,
+          canvas: data.animation.frame2,
         },
         {
           a: { x: 1, y: 1 },
           b: { x: -1, y: 1 },
           c: { x: 1, y: -1 },
           d: { x: -1, y: -1 },
-          canvas: canvas3,
+          canvas: data.animation.frame3,
         },
       ].forEach(aConfig => {
         this.layer1Img.cells.forEach(c => {
@@ -410,7 +399,8 @@ window.addEventListener('DOMContentLoaded', () => {
               x: offset1.x + c.x + aConfig.a.x,
               y: c.y + offset1.y + aConfig.a.y,
             },
-            ...commonParams,
+            1,
+            { x: 1, y: 1 },
           )
         })
         this.layer1Img.cells.forEach(c => {
@@ -419,7 +409,8 @@ window.addEventListener('DOMContentLoaded', () => {
               x: w / 10 - 1 - offset1.x - c.x + aConfig.b.x,
               y: c.y + offset1.y + aConfig.b.y,
             },
-            ...commonParams,
+            1,
+            { x: 1, y: 1 },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -428,7 +419,8 @@ window.addEventListener('DOMContentLoaded', () => {
               x: offset2.x + c.x + aConfig.c.x,
               y: c.y + offset2.y + aConfig.c.y,
             },
-            ...commonParams,
+            1,
+            { x: 1, y: 1 },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -437,10 +429,20 @@ window.addEventListener('DOMContentLoaded', () => {
               x: w / 10 - 1 - offset2.x - c.x + aConfig.d.x,
               y: c.y + offset2.y + aConfig.d.y,
             },
-            ...commonParams,
+            1,
+            { x: 1, y: 1 },
           )
         })
       })
+
+      Object.keys(data.animation).forEach(frame => {
+        data.animation[frame].createImg(w + 20, h + 20)
+        testWrapper.appendChild(data.animation[frame].img)
+      })
+
+      // next, instead of rendering on test wrapper,
+      // add to animation component so it can be added as animation display
+      // then we can remove the old invader display, update the config, and display it in the gallery
     }
     drawOnCanvas() {
       const { w, h, x, y, positions } = this.getPositions(this.allCells)
@@ -452,12 +454,12 @@ window.addEventListener('DOMContentLoaded', () => {
       })
       // create download img
       data.canvas = new InvaderCanvas({
-        w: w + 40,
-        h: h + 40,
+        w: w / 10 + 2,
+        h: h / 10 + 2,
         cells: positions.map(c => {
           return {
-            x: (c.x - x) / 10 + 2,
-            y: (c.y - y) / 10 + 2,
+            x: (c.x - x) / 10 + 1,
+            y: (c.y - y) / 10 + 1,
           }
         }),
       })
@@ -485,8 +487,8 @@ window.addEventListener('DOMContentLoaded', () => {
   configInput.value =
     '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
 
-  // configInput.value =
-  //   '6881218343667515871596313778351428346630268124353325879649274876526523172322935'
+  configInput.value =
+    '6881218343667515871596313778351428346630268124353325879649274876526523172322935'
 
   // configInput.value =
   //   '51213323649739187417365668232625627393395378978188531222516241136399478784838198447722126986473765097641789315211198138845589619899213477975523321449616497737969515133722692129715119823347618684224'

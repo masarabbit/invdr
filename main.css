@@ -75,61 +75,25 @@ a:hover {
 
 .invader-display {
   position: absolute;
+  display: flex;
   --d: 10px;
+  overflow: hidden;
 }
 
-.animate .layer1 {
-  animation: animate-layer1 1.4s infinite steps(2);
+.invader-display.animate div {
+  animation: animate-frames infinite 1.4s steps(1);
 }
 
-@keyframes animate-layer1 {
+@keyframes animate-frames {
   0%,
+  50%,
   100% {
-    transform: translateY(calc(var(--d) * -1));
+    transform: translateX(0);
   }
-  50% {
-    transform: translateY(var(--d));
+  25% {
+    transform: translateX(var(--w));
   }
-}
-
-.animate .layer2 {
-  animation: animate-layer2 1.4s infinite steps(2);
-}
-
-@keyframes animate-layer2 {
-  0%,
-  100% {
-    transform: translateY(var(--d));
-  }
-  50% {
-    transform: translateY(calc(var(--d) * -1));
-  }
-}
-
-.animate .left {
-  animation: animate-left 1.4s infinite steps(2);
-}
-
-@keyframes animate-left {
-  0%,
-  100% {
-    transform: translateX(calc(var(--d) * -1));
-  }
-  50% {
-    transform: translateX(var(--d));
-  }
-}
-
-.animate .right {
-  animation: animate-right 1.4s infinite steps(2);
-}
-
-@keyframes animate-right {
-  0%,
-  100% {
-    transform: translateX(var(--d)) scale(-1, 1);
-  }
-  50% {
-    transform: translateX(calc(var(--d) * -1)) scale(-1, 1);
+  75% {
+    transform: translateX(calc(2 * var(--w)));
   }
 }

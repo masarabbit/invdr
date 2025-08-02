@@ -77,7 +77,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ...props,
       })
     }
-    createDownloadImg(margin = 1, d = 10) {
+    createDownloadImg(margin = 0, d = 10) {
       const w = (this.w + margin * 2) * d
       const h = (this.h + margin * 2) * d
       this.resizeCanvas(w, h)
@@ -285,9 +285,11 @@ window.addEventListener('DOMContentLoaded', () => {
         y: Math.abs(this.layer2Img.pos.y - y / 10),
       }
 
+      const margin = 2
+
       const imgSize = {
-        w: w / 10 + 2,
-        h: h / 10 + 2,
+        w: w / 10 + margin * 2,
+        h: h / 10 + margin * 2,
       }
 
       Object.keys(data.animation).forEach((frame, i) => {
@@ -297,8 +299,8 @@ window.addEventListener('DOMContentLoaded', () => {
               ...imgSize,
               cells: positions.map(c => {
                 return {
-                  x: (c.x - x) / 10 + 1,
-                  y: (c.y - y) / 10 + 1,
+                  x: (c.x - x) / 10 + margin,
+                  y: (c.y - y) / 10 + margin,
                 }
               }),
             })
@@ -333,7 +335,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset1.y + aConfig.a.y,
             },
             1,
-            { x: 1, y: 1 },
+            { x: margin, y: margin },
           )
         })
         this.layer1Img.cells.forEach(c => {
@@ -343,7 +345,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset1.y + aConfig.b.y,
             },
             1,
-            { x: 1, y: 1 },
+            { x: margin, y: margin },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -353,7 +355,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset2.y + aConfig.c.y,
             },
             1,
-            { x: 1, y: 1 },
+            { x: margin, y: margin },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -363,24 +365,24 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset2.y + aConfig.d.y,
             },
             1,
-            { x: 1, y: 1 },
+            { x: margin, y: margin },
           )
         })
       })
 
       this.animation = Object.assign(document.createElement('div'), {
         className: 'invader-display',
-        style: `width: ${w + 20}px; height: ${h + 20}px;`,
+        style: `width: ${w + margin * 20}px; height: ${h + margin * 20}px;`,
         innerHTML: '<div style="width: 300%; display: flex;"></div>',
       })
-      this.animation.style.setProperty('--w', `-${w + 20}px`)
+      this.animation.style.setProperty('--w', `-${w + margin * 20}px`)
       wrapper.appendChild(this.animation)
       this.animation.style.transform = `translateY(${
-        y - this.animation.getBoundingClientRect().top - 10
+        y - this.animation.getBoundingClientRect().top - margin * 10
       }px)`
 
       data.animFrames.forEach(frame => {
-        frame.createImg(w + 20, h + 20)
+        frame.createImg(w + margin * 20, h + margin * 20)
         this.animation.childNodes[0].appendChild(frame.img)
       })
 

@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
   const configKey = decodeKey.reduce((o, n, i) => ((o[n] = i + 1), o), {})
   const GROW_SPEED = 60
+  const MARGIN = 2
 
   const data = {
     invader: null,
@@ -199,7 +200,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ...props,
       })
       if (configInput.value) this.readConfig()
-      this.growthEnd = 30 + randomN(70)
+      this.growthEnd = 30 + randomN(50)
       this.el = Object.assign(document.createElement('div'), {
         className: 'invader',
       })
@@ -285,11 +286,9 @@ window.addEventListener('DOMContentLoaded', () => {
         y: Math.abs(this.layer2Img.pos.y - y / 10),
       }
 
-      const margin = 2
-
       const imgSize = {
-        w: w / 10 + margin * 2,
-        h: h / 10 + margin * 2,
+        w: w / 10 + MARGIN * 2,
+        h: h / 10 + MARGIN * 2,
       }
 
       Object.keys(data.animation).forEach((frame, i) => {
@@ -299,8 +298,8 @@ window.addEventListener('DOMContentLoaded', () => {
               ...imgSize,
               cells: positions.map(c => {
                 return {
-                  x: (c.x - x) / 10 + margin,
-                  y: (c.y - y) / 10 + margin,
+                  x: (c.x - x) / 10 + MARGIN,
+                  y: (c.y - y) / 10 + MARGIN,
                 }
               }),
             })
@@ -327,6 +326,21 @@ window.addEventListener('DOMContentLoaded', () => {
           d: { x: -1, y: -1 },
           canvas: data.animation.frame3,
         },
+        // ALT - this could be randomised too.
+        // {
+        //   a: { x: -1, y: -2 },
+        //   b: { x: 1, y: -2 },
+        //   c: { x: -1, y: 0 },
+        //   d: { x: 1, y: 0 },
+        //   canvas: data.animation.frame2,
+        // },
+        // {
+        //   a: { x: 1, y: -1 },
+        //   b: { x: -1, y: -1 },
+        //   c: { x: 1, y: 0 },
+        //   d: { x: -1, y: 0 },
+        //   canvas: data.animation.frame3,
+        // },
       ].forEach(aConfig => {
         this.layer1Img.cells.forEach(c => {
           aConfig.canvas.placeTile(
@@ -335,7 +349,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset1.y + aConfig.a.y,
             },
             1,
-            { x: margin, y: margin },
+            { x: MARGIN, y: MARGIN },
           )
         })
         this.layer1Img.cells.forEach(c => {
@@ -345,7 +359,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset1.y + aConfig.b.y,
             },
             1,
-            { x: margin, y: margin },
+            { x: MARGIN, y: MARGIN },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -355,7 +369,7 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset2.y + aConfig.c.y,
             },
             1,
-            { x: margin, y: margin },
+            { x: MARGIN, y: MARGIN },
           )
         })
         this.layer2Img.cells.forEach(c => {
@@ -365,24 +379,24 @@ window.addEventListener('DOMContentLoaded', () => {
               y: c.y + offset2.y + aConfig.d.y,
             },
             1,
-            { x: margin, y: margin },
+            { x: MARGIN, y: MARGIN },
           )
         })
       })
 
       this.animation = Object.assign(document.createElement('div'), {
         className: 'invader-display',
-        style: `width: ${w + margin * 20}px; height: ${h + margin * 20}px;`,
+        style: `width: ${w + MARGIN * 20}px; height: ${h + MARGIN * 20}px;`,
         innerHTML: '<div style="width: 300%; display: flex;"></div>',
       })
-      this.animation.style.setProperty('--w', `-${w + margin * 20}px`)
+      this.animation.style.setProperty('--w', `-${w + MARGIN * 20}px`)
       wrapper.appendChild(this.animation)
       this.animation.style.transform = `translateY(${
-        y - this.animation.getBoundingClientRect().top - margin * 10
+        y - this.animation.getBoundingClientRect().top - MARGIN * 10
       }px)`
 
       data.animFrames.forEach(frame => {
-        frame.createImg(w + margin * 20, h + margin * 20)
+        frame.createImg(w + MARGIN * 20, h + MARGIN * 20)
         this.animation.childNodes[0].appendChild(frame.img)
       })
 

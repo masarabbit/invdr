@@ -53,26 +53,26 @@ window.addEventListener('DOMContentLoaded', () => {
     return animation
   }
 
-  setInterval(() => {
-    const invader = invaders[Math.floor(Math.random() * invaders.length)]
-    if (!invader || invader.el.classList.contains('img-hidden')) return
-
-    const currentInvader = invader.el
-    currentInvader.classList.add('img-hidden')
-    const animation = createAnimationDisplay(invader.config.imgConfig)
-    invader.el.appendChild(animation)
-    setTimeout(() => {
-      currentInvader.classList.remove('img-hidden')
-      animation.remove()
-    }, 8 * 1000)
-  }, 2 * 1000)
-
-  // invaders.forEach(invader => {
+  // setInterval(() => {
+  //   const invader = invaders[Math.floor(Math.random() * invaders.length)]
   //   if (!invader || invader.el.classList.contains('img-hidden')) return
 
   //   const currentInvader = invader.el
   //   currentInvader.classList.add('img-hidden')
   //   const animation = createAnimationDisplay(invader.config.imgConfig)
   //   invader.el.appendChild(animation)
-  // })
+  //   setTimeout(() => {
+  //     currentInvader.classList.remove('img-hidden')
+  //     animation.remove()
+  //   }, 8 * 1000)
+  // }, 2 * 1000)
+
+  invaders.forEach(invader => {
+    if (!invader || invader.el.classList.contains('img-hidden')) return
+
+    const currentInvader = invader.el
+    currentInvader.classList.add('img-hidden')
+    const animation = createAnimationDisplay(invader.config.imgConfig)
+    invader.el.appendChild(animation)
+  })
 })

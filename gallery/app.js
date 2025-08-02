@@ -3,14 +3,13 @@ import data from './data.js'
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
   const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
-  const F = 5
+  const F = 4
 
   document.querySelector('.wrapper').innerHTML = invaderData.reduce((a, i) => {
     if (!i.imgConfig.frames.length) return a
     return (
       a +
-      `
-      <a class="thumbnail-link" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
+      `<a class="thumbnail-link" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
         i.imgConfig.frames[0],
       )}">
         <img 
@@ -39,20 +38,18 @@ window.addEventListener('DOMContentLoaded', () => {
       frames,
       size: { w, h },
     } = config
-
     const animation = Object.assign(document.createElement('div'), {
       className: 'invader-display animate',
       style: `width: ${w * F}px; height: ${h * F}px;`,
       innerHTML: `<div style="width: 300%; display: flex;">${frames.reduce(
         (a, f) =>
-          (a += `<img src="data:image/png;base64,${f}" style="width: ${
-            w * F
-          }px; height: ${h * F}px;"/>`),
+          (a += `
+            <img src="data:image/png;base64,${f}" style="width: ${w * F}px;"/>
+            `),
         '',
       )}</div>`,
     })
     animation.style.setProperty('--w', `-${w * F}px`)
-
     return animation
   }
 

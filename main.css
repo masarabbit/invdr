@@ -81,7 +81,7 @@ a:hover {
 }
 
 .invader-display.animate div {
-  animation: animate-frames infinite 1.4s steps(1);
+  animation: animate-frames infinite 1s steps(1);
 }
 
 @keyframes animate-frames {

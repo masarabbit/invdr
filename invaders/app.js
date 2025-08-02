@@ -435,6 +435,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // configInput.value =
   //   '51213323649739187417365668232625627393395378978188531222516241136399478784838198447722126986473765097641789315211198138845589619899213477975523321449616497737969515133722692129715119823347618684224'
+
+  //* this one didn't seem to display very well on mobile
+  // configInput.value =
+  //   '35192453845766841649812634127791567018191587278588591554583175346311491'
+
   downloadBtn.addEventListener('click', () => {
     if (!data.animation.frame1.downloadImg)
       data.animation.frame1.createDownloadImg()

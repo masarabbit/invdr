@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <style>
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 0;
+    }
     textarea {
       width: 100%;
       height: auto;
@@ -14,10 +19,10 @@
       color: #0badd1;
       background-color: #167b914f;
       font-size: 0.7rem;
+      margin-top: 40px;
     }
-    btn-wrapper {
-      position: relative;
-      margin: 5px 12px;
+    .btn-wrapper {
+      display: flex;
     }
     .btn-wrapper button {
       position: relative;
@@ -26,18 +31,21 @@
   </style>
   <body>
     <nav>
-      <a class="btn" href="https://masarabbit.github.io/nvdr/invaders">
-        generate invaders
-      </a>
-      <a class="btn" href="https://masarabbit.github.io/nvdr/gallery">
-        gallery
-      </a>
+      <div class="btn-wrapper">
+        <button data-id="download">download</button>
+        <button data-id="delete">delete</button>
+        <button data-id="save">save</button>
+      </div>
+      <div class="btn-wrapper">
+        <a class="btn" href="https://masarabbit.github.io/nvdr/invaders">
+          generate invaders
+        </a>
+        <a class="btn" href="https://masarabbit.github.io/nvdr/gallery">
+          gallery
+        </a>
+      </div>
     </nav>
-    <div class="btn-wrapper">
-      <button data-id="download">download</button>
-      <button data-id="delete">delete</button>
-      <button data-id="save">save</button>
-    </div>
+
     <textarea spellcheck="false"></textarea>
     <div class="sign">
       by masahito / <a href="http://www.ma5a.com/">ma5a.com</a>

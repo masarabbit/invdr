@@ -67,7 +67,7 @@ const saveDataName = 'ma5a_invdr_generated_data'
 
 const url = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
   ? ''
-  : 'https://masarabbit.github.io/invdr'
+  : 'https://masarabbit.github.io/invdr' // If repo is cloned, you need to update this to where you're hosting your page!!
 
 const generateLinks = () => {
   document

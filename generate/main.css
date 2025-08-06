@@ -1,23 +1,10 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  font-family: sans-serif;
-  background-color: #012625;
-  color: white;
-}
-
 .wrapper {
   position: absolute;
-  height: 100vh;
+  height: calc(100vh - 200px);
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: start;
-  padding-top: 20px;
+  align-items: center;
 }
 
 .invader {
@@ -25,8 +12,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 0 1px yellow;
-  /* width: 20px; */
 }
 
 .invader .body {
@@ -34,40 +19,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 1px rgb(255, 0, 204);
-  width: 8px;
-  height: 4px;
-  --cell: 4px;
 }
 
 .cell {
   position: absolute;
-
-  --w: 1;
-  --h: 1;
-  width: calc(var(--w) * var(--cell));
-  height: calc(var(--h) * var(--cell));
-  --x1: 0;
-  --y1: 0;
-  --x2: 0;
-  --y2: 0;
-  animation: move-in forwards 0.2s, color-change forwards 2s;
-}
-
-.left,
-.right {
-  /* position: absolute; */
-  box-shadow: 0 0 0 1px red;
+  --cell: 10px;
   width: var(--cell);
   height: var(--cell);
+  --x: 0;
+  --y: 0;
+  animation: grow forwards 0.2s, color-change forwards 2s;
 }
 
-@keyframes move-in {
+@keyframes grow {
   0% {
-    transform: translate(var(--x1), var(--y1));
+    transform: translate(0, 0);
   }
   100% {
-    transform: translate(var(--x2), var(--y2));
+    transform: translate(var(--x), var(--y));
   }
 }
 
@@ -82,6 +51,12 @@ body {
   100% {
     background-color: #fff;
   }
+  80% {
+    background-color: hotpink;
+  }
+  90% {
+    background-color: #6a1691;
+  }
 }
 
 .indicator {
@@ -92,8 +67,29 @@ body {
 }
 
 canvas {
+  /* position: absolute; */
+  box-shadow: 0 0 0 1px cyan;
+}
+
+.copy {
+  align-self: end;
+}
+
+.info-wrapper {
   position: absolute;
-  animation: fade-in forwards 1s;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+.image {
+  background-size: cover;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  /* opacity: 0.3; */
 }
 
 @keyframes fade-in {
@@ -105,32 +101,40 @@ canvas {
   }
 }
 
-.info-wrapper {
-  position: absolute;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
+input {
+  border: 0;
+  color: #0badd1;
+  background-color: #167b914f;
+  flex-grow: 1;
 }
 
-textarea,
-button {
-  background-color: transparent;
-  border: 1px solid #fff;
-  color: #fff;
+input:placeholder-shown + button {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
-.button-wrapper {
+.btn-wrapper {
   padding: 4px;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
-button {
-  margin: 4px;
-  padding: 4px 8px;
-  text-transform: uppercase;
-  cursor: pointer;
+section {
+  display: flex;
 }
 
-button:hover {
-  border: 1px solid hotpink;
-  color: hotpink;
+.hide {
+  opacity: 0;
 }
+
+input[data-id='config'] {
+  border-bottom: 1px dashed #0a596b;
+}
+
+/* .layer2 {
+  opacity: 0.3;
+}
+
+.layer1 {
+  opacity: 0.5;
+} */

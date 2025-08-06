@@ -18,8 +18,6 @@ function init() {
     }
   }
 
-  // TODO add auto animation for handling card
-
   const addEvents = (target, event, action, array) => {
     array.forEach(a => target[`${event}EventListener`](a, action))
   }
@@ -71,22 +69,6 @@ function init() {
     }
   }
 
-  // const addMarker = pos => {
-  //   card.el.appendChild(
-  //     Object.assign(document.createElement('div'), {
-  //       style: `
-  //       position: absolute;
-  //       left: ${pos.x}px;
-  //       top: ${pos.y}px;
-  //       margin: -5px 0 0 -5px;
-  //       width: 10px;
-  //       height: 10px;
-  //       background-color: hotpink;
-  //       z-index: 999;
-  //     `,
-  //     }),
-  //   )
-  // }
   class Card {
     constructor(props) {
       Object.assign(this, {
@@ -197,6 +179,7 @@ function init() {
     }
     tiltCard({ x, y }) {
       this.overlay.clear()
+      wrapper.classList.add('interacted')
       const oppositePos = rotateCoord({
         deg: 180,
         pos: { x, y },
@@ -265,6 +248,7 @@ function init() {
       this.animationTimer = setTimeout(() => {
         if (!this.animation.interval) this.animateCard()
       }, 4000)
+      wrapper.classList.remove('interacted')
     }
   }
 

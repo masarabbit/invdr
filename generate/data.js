@@ -61,5 +61,6 @@ const data = [
   //   dataUrl: '',
   // },
 ]
+const saveDataName = 'ma5a_invdr_generated_data'
 
-export default data
+export { data, saveDataName }

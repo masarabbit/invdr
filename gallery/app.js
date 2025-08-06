@@ -1,7 +1,7 @@
-import data from './data.js'
+import { data, saveDataName } from '../generate/data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
-  const saveData = localStorage.getItem('ma5a_nvdr_generated_data')
+  const saveData = localStorage.getItem(saveDataName)
   const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
   const F = 4
 
@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!i.imgConfig.frames.length) return a
     return (
       a +
-      `<a class="thumbnail-link" href="https://masarabbit.github.io/nvdr/card/?invader=${encodeURIComponent(
+      `<a class="thumbnail-link" href="https://masarabbit.github.io/invdr/display/?invader=${encodeURIComponent(
         i.imgConfig.frames[0],
       )}">
         <img 

@@ -1,6 +1,7 @@
+import { saveDataName } from '../generate/data.js'
+
 window.addEventListener('DOMContentLoaded', () => {
-  const SAVE_DATA_NAME = 'ma5a_nvdr_generated_data'
-  const saveData = localStorage.getItem(SAVE_DATA_NAME)
+  const saveData = localStorage.getItem(saveDataName)
 
   if (saveData) {
     const textarea = document.querySelector('textarea')
@@ -18,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
         )
         const link = document.createElement('a')
         link.href = url
-        link.download = `nvdr_config_${new Date().getTime()}.txt`
+        link.download = `invdr_config_${new Date().getTime()}.txt`
         link.click()
       })
 
@@ -26,7 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
       .querySelector('button[data-id="delete"]')
       .addEventListener('click', () => {
         if (window.confirm('Are you sure you want to delete?')) {
-          localStorage.removeItem(SAVE_DATA_NAME)
+          localStorage.removeItem(saveDataName)
           textarea.value = ''
           textarea.style.height = 'auto'
         }
@@ -40,7 +41,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ) {
           const data = JSON.parse(textarea.value)
           const newData = JSON.stringify(data, null, 1)
-          localStorage.setItem(SAVE_DATA_NAME, newData)
+          localStorage.setItem(saveDataName, newData)
         }
       })
   }

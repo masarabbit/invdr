@@ -1,3 +1,5 @@
+import { generateLinks } from '../generate/data.js'
+
 function init() {
   const wrapper = document.querySelector('.wrapper')
   const nearestN = (x, n) => (x === 0 ? 0 : x - 1 + Math.abs(((x - 1) % n) - n))
@@ -278,6 +280,8 @@ function init() {
       container: wrapper,
     })
   }
+
+  generateLinks()
 }
 
 window.addEventListener('DOMContentLoaded', init)

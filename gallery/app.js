@@ -1,4 +1,4 @@
-import { data, saveDataName } from '../generate/data.js'
+import { data, saveDataName, url, generateLinks } from '../generate/data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem(saveDataName)
@@ -9,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!i.imgConfig.frames.length) return a
     return (
       a +
-      `<a class="thumbnail-link" href="https://masarabbit.github.io/invdr/display/?invader=${encodeURIComponent(
+      `<a class="thumbnail-link" href="${url}/display/?invader=${encodeURIComponent(
         i.imgConfig.frames[0],
       )}">
         <img 
@@ -66,6 +66,8 @@ window.addEventListener('DOMContentLoaded', () => {
       animation.remove()
     }, 8 * 1000)
   }, 2 * 1000)
+
+  generateLinks()
 
   // invaders.forEach(invader => {
   //   if (!invader || invader.el.classList.contains('img-hidden')) return

@@ -1,3 +1,5 @@
+// TODO curate
+
 const data = [
   // {
   //   name: 'corog',
@@ -63,4 +65,17 @@ const data = [
 ]
 const saveDataName = 'ma5a_invdr_generated_data'
 
-export { data, saveDataName }
+const url = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
+  ? ''
+  : 'https://masarabbit.github.io/invdr'
+
+const generateLinks = () => {
+  document
+    .querySelector('nav')
+    .querySelectorAll('a')
+    .forEach(a => {
+      a.href = url + '/' + a.innerHTML
+    })
+}
+
+export { data, saveDataName, url, generateLinks }

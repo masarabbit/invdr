@@ -1,4 +1,4 @@
-import { saveDataName } from './data.js'
+import { saveDataName, generateLinks } from './data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
@@ -488,4 +488,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
   data.readData()
   data.invader = new Invader()
+  generateLinks()
 })

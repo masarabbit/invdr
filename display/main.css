@@ -81,3 +81,8 @@ canvas {
   position: absolute;
   mix-blend-mode: screen;
 }
+
+.btn-wrapper {
+  position: absolute;
+  bottom: 60px;
+}

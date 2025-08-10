@@ -69,6 +69,9 @@ const url = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
   ? ''
   : 'https://masarabbit.github.io/invdr' // If repo is cloned, you need to update this to where you're hosting your page!!
 
+const saveData = localStorage.getItem(saveDataName)
+const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
+
 const generateLinks = () => {
   document
     .querySelector('nav')
@@ -78,4 +81,4 @@ const generateLinks = () => {
     })
 }
 
-export { data, saveDataName, url, generateLinks }
+export { invaderData, saveDataName, url, generateLinks }

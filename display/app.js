@@ -1,4 +1,4 @@
-import { generateLinks } from '../generate/data.js'
+import { invaderData, url, generateLinks } from '../generate/data.js'
 
 function init() {
   const wrapper = document.querySelector('.wrapper')
@@ -278,6 +278,21 @@ function init() {
       h: 180,
       d: 10,
       container: wrapper,
+    })
+  }
+
+  const saveData =
+    invaderData?.[
+      Object.keys(invaderData).find(
+        k => invaderData[k].imgConfig.frames[0] === param.get('invader'),
+      )
+    ]
+
+  if (saveData) {
+    const btn = document.querySelector('button')
+    btn.style.display = 'block'
+    btn.addEventListener('click', () => {
+      window.location = url + `/generate/?config=${saveData.config}`
     })
   }
 

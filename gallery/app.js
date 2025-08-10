@@ -1,8 +1,6 @@
-import { data, saveDataName, url, generateLinks } from '../generate/data.js'
+import { invaderData, url, generateLinks } from '../generate/data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
-  const saveData = localStorage.getItem(saveDataName)
-  const invaderData = saveData ? [...JSON.parse(saveData), ...data] : data
   const F = 4
 
   document.querySelector('.wrapper').innerHTML = invaderData.reduce((a, i) => {

@@ -11,7 +11,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const getDataUrl = el => el.toDataURL().split(',')[1]
   const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
   const configKey = decodeKey.reduce((o, n, i) => ((o[n] = i + 1), o), {})
-  const GROW_SPEED = 60
+  // const GROW_SPEED = 60
+  const GROW_SPEED = 20
   const MARGIN = 2
 
   const splitArr = arr => {
@@ -335,21 +336,6 @@ window.addEventListener('DOMContentLoaded', () => {
           d: { x: -1, y: -1 },
           canvas: data.animation.frame3,
         },
-        // ALT - this could be randomised too.
-        // {
-        //   a: { x: -1, y: -2 },
-        //   b: { x: 1, y: -2 },
-        //   c: { x: -1, y: 0 },
-        //   d: { x: 1, y: 0 },
-        //   canvas: data.animation.frame2,
-        // },
-        // {
-        //   a: { x: 1, y: -1 },
-        //   b: { x: -1, y: -1 },
-        //   c: { x: 1, y: 0 },
-        //   d: { x: -1, y: 0 },
-        //   canvas: data.animation.frame3,
-        // },
       ].forEach(aConfig => {
         this.layer1Img.cells.forEach(c => {
           aConfig.canvas.placeTile(
@@ -435,15 +421,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     data.invader = new Invader({ save })
   }
-
-  // configInput.value =
-  //   '94836666277724229829593252521586644345169423299321092742881883524864697135664935946677662799359671257'
-
-  // configInput.value =
-  //   '6881218343667515871596313778351428346630268124353325879649274876526523172322935'
-
-  // configInput.value =
-  //   '51213323649739187417365668232625627393395378978188531222516241136399478784838198447722126986473765097641789315211198138845589619899213477975523321449616497737969515133722692129715119823347618684224'
 
   downloadBtn.addEventListener('click', () => {
     if (!data.animation.frame1.downloadImg)

@@ -66,15 +66,6 @@
   bottom: 10px;
 }
 
-canvas {
-  /* position: absolute; */
-  box-shadow: 0 0 0 1px cyan;
-}
-
-.copy {
-  align-self: end;
-}
-
 .info-wrapper {
   position: absolute;
   width: 100%;
@@ -89,7 +80,6 @@ canvas {
   background-size: cover;
   background-repeat: no-repeat;
   image-rendering: pixelated;
-  /* opacity: 0.3; */
 }
 
 @keyframes fade-in {

@@ -67,9 +67,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   generateLinks()
 
+  //* animates all thumbnails
   // invaders.forEach(invader => {
   //   if (!invader || invader.el.classList.contains('img-hidden')) return
-
   //   const currentInvader = invader.el
   //   currentInvader.classList.add('img-hidden')
   //   const animation = createAnimationDisplay(invader.config.imgConfig)

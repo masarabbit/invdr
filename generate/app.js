@@ -11,7 +11,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const getDataUrl = el => el.toDataURL().split(',')[1]
   const decodeKey = ['00', '01', '02', '10', '11', '12', '20', '21', '22']
   const configKey = decodeKey.reduce((o, n, i) => ((o[n] = i + 1), o), {})
-  // const GROW_SPEED = 60
   const GROW_SPEED = 20
   const MARGIN = 2
 
@@ -152,7 +151,7 @@ window.addEventListener('DOMContentLoaded', () => {
         this.body.type === 'layer2' &&
         this.body.invader === data.invader
       ) {
-        setTimeout(() => this.body.invader.drawOnCanvas(), 2400)
+        setTimeout(() => this.body.invader.createInvaderData(), 2400)
       }
     }
     split() {
@@ -401,8 +400,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       dataUrlInput.value = data.imgConfig.frames[0]
     }
-    drawOnCanvas() {
-      // TODO maybe rename
+    createInvaderData() {
       this.generateConfig()
       configInput.value = this.generatedConfig
       this.createAnimation()

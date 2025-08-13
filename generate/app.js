@@ -149,7 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ) {
         setTimeout(
           () => this.body.invader.createInvaderData(),
-          GROW_SPEED * growthEnd + 100,
+          GROW_SPEED * growthEnd + 1200,
         )
       }
     }

@@ -13,7 +13,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABMAAAARCAYAAAA/mJfHAAAAAXNSR0IArs4c6QAAAIVJREFUOE+9UlsKwDAIm/c/tMOBQ1KjdpT1p1Alr0aug0cQS1XV30Rka14uG6gBGoHfkRzJFjBbjupYCpnqFKwDzIAeF4wZs+uyLMFcXVTh2VHrB5vBbX4hoZk52CSrt5eVAsxoK7OsX/gBSB7n/5SWFZcVdtSzytYym1SgC370mxOiuHMDG95QEmisCFkAAAAASUVORK5CYII=',
       ],
     },
-    name: 'esas',
+    name: 'suaoqn',
   },
   {
     config:
@@ -29,7 +29,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAACEAAAAUCAYAAAADU1RxAAAAAXNSR0IArs4c6QAAALtJREFUSEvtlFEKgDAMQ+39Dz2ZEAk102WKTNAvYbV9JulimeCJCRiWb0OUUkpVMSKC30eUHVICQ9XACuWC2B/UARWCFWBFXoFQNty1xVbizArY4KphQSiAbMsIyPcg8JesiAroI9uB9PMm5Ma990RPr4MdreAhbPlcZaJV28pLEyInnO8GDOaaq3OoinVmZXcI9YcqA6oJNxzpIyHO9pw9VgHsOc+2bBA57W663fo8z7on3GG99T8ElFoBfwWwFVkUkiAAAAAASUVORK5CYII=',
       ],
     },
-    name: 'ynhn',
+    name: 'isuiojjp',
   },
   {
     config:
@@ -45,7 +45,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAAA0AAAATCAYAAABLN4eXAAAAAXNSR0IArs4c6QAAAH5JREFUOE+lU1sOwCAIk/sfmoVlNR0vF+YXKqXQqqzBkgFmzUGqqiJyF7DYs/OdxSHRzhiY7Xd7GUPFOAdhplNbyCuHr6wIQvDQXRx8YvlhAVQG+wvk/fL+BFAmxk56vEORwNQJULbnq/M+bY9Z/POxu7Y9VguG89l/yb9+yAvfnIgUEP+r/AAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'ujxr',
+    name: 'yvivpkeo',
   },
   {
     config:
@@ -61,7 +61,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAACsAAAAYCAYAAABjswTDAAAAAXNSR0IArs4c6QAAAQxJREFUWEftlusOwyAIhcv7P7SNy0go4+bBNemy/aw6Pg8HkI4H/ehBrMfvw44xBhHBF0XPLwfkQDqgB+DtQ4CXYaXHJfj8bqk99/AaAijjQbAMoIszgq3szYq9DTsBpXo6oFaW1xHPt2A5oKf0JYXvgowutl3ZyALWmlS+a4WWslo5K+Ue7O02yNIWrd8GOyF0yqV/WU3P0wjoq/111KkUVten7T4rlY0KKPI0IhKsrGWDajf4qg30e6AyZrPhIH1dHcOmsrpxe8WEpJLPRAXqvTM+YC0V5YisqpBdRGdHP3asOBdY6zm3s5o9a1hjmYtY+jsssM4cz5SNPO2dhbvBKsyO/X/YHSpa/3ECMpYIKDgJiqgAAAAASUVORK5CYII=',
       ],
     },
-    name: 'azuizcv',
+    name: 'zxxsvsueepnnmo',
   },
   {
     config:
@@ -77,7 +77,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAAA8AAAAdCAYAAAB1yDbaAAAAAXNSR0IArs4c6QAAAKpJREFUOE/FVVsOgDAIk/sfegYTlo4VFoVEP92gDyrKVXikUHv1FY8xhjIRka0pO5uX9FCL7BKTY+fWfEHA7tgEmyKrUDMyYTIeeZHbHpnKYC+ZboZOkVuKI6OMLXV7HpLRpW6f5owepchRUPppZxH10dxCkulFE0Pa0cdxREaDPsXzn1Ep7TKyRdBGh02P8fSOM6fTOSNC5PyyAKPNaSP0G7Rvb7/9e5SQbwAXqB7RCZGiAAAAAElFTkSuQmCC',
       ],
     },
-    name: 'inyzltz',
+    name: 'ivswwwznhenopj',
   },
   {
     config:
@@ -93,7 +93,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAAA0AAAAPCAYAAAA/I0V3AAAAAXNSR0IArs4c6QAAAG9JREFUOE+lklEKwDAIQ+f9D+2wkJLaBwPXr1J9iYbGMzhBTGam3iPi6vkHlbpUycnrh5M397F9zA1JSWA19bvABREgJwIPJ0qM9rsgitjdShidVsF26hPsnSgtSrPE5ukpwXEQ2qdH7u/4974+/gv1kngQRG9M7AAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'otfzzl',
+    name: 'aukh',
   },
   {
     config:
@@ -109,7 +109,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABEAAAAMCAYAAACEJVa/AAAAAXNSR0IArs4c6QAAAFRJREFUOE/V0jkOACAIBED2/4/GUJDgomiBhXYYMhwB0vDQYMg7RFV11yGAVDh9VIDDDE3IDbCCPujE5o7jxbjcic3Le2HMco6IL86wmMxxPIGWYxuzijANhkigxQAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'zjhw',
+    name: 'xyuxehnn',
   },
   {
     config:
@@ -125,7 +125,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABUAAAAQCAYAAAD52jQlAAAAAXNSR0IArs4c6QAAAHlJREFUOE/FlFEKwCAMQ839D93Rj0LW1VQQnV+CNX1NUIwDCwc0xz+iZmZ5GgASpiUNURfivbJtKloRrhJLUiWsLLhHOgtnNbQXKV/iYKpQ8jnbIUVdTKWfIaL5x1Mv5K7dyLnehe+mH6N0pKXf3YdS2bH9TLum1fkDNDhYEWsFoWMAAAAASUVORK5CYII=',
       ],
     },
-    name: 'okewqzjkz',
+    name: 'zsyqoh',
   },
   {
     config:
@@ -141,7 +141,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAYAAAACsSQRAAAAAXNSR0IArs4c6QAAAGBJREFUOE/NktsKACAIQ93/f7RhIJjZhbCotwTPnA6U8JDAoHwIMzOABrxT6xrEnoCk2Vu1dSsWqlqAB+p/CBHlaIJoIlt7Y2e0l7t2VHW2Fx+Bes0osavrdBb/jP3pVAWQ+VQQWFowGgAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'xebdluw',
+    name: 'iumj',
   },
   {
     config:
@@ -157,7 +157,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAACEAAAAaCAYAAAA5WTUBAAAAAXNSR0IArs4c6QAAARxJREFUSEvNVtEOg0AI2/3/R5/RBNMwCgVdMl9mJsfVtldcnz+4VoZh773XWuv8PevOexUzrrE+bG3Y1Br4jatmtomvY/2sXgaBrGSMRHUtEFjsqetIgYxQCUDaiwmvn8lQvUHlD7+e7XODYAZk9EbMoBeYfJFhb09UmvuTcpsKTo//LwOKgKUjl9Hq9UdG1WMtgai0f/r8EYhKQhXcGIQHoAZZBGwMwo62eWCSI2liKjSyM6+s/QrCySJkgc2LTt+RHNFUnUzasRzZhMWw+hkTkQ9ws+m3hywHS00GQk3Lq06hLRrxUTyzumoPCYQf99g0CqmuSVsglGCaRLkMIsoGRnM3wiUQXuvqG9Ob9RVPdDXOPPT6AKveUH1+ALdCRCrAL6WGAAAAAElFTkSuQmCC',
       ],
     },
-    name: 'uyze',
+    name: 'avsaxeepjh',
   },
   {
     config:
@@ -173,7 +173,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABkAAAATCAYAAABlcqYFAAAAAXNSR0IArs4c6QAAALlJREFUSEu9lFEOhEAIQ+X+hx4zRia1gpTEzP7sZgN9tgJ2bPhYhzHGGGZm/q32tiBTtAuYPTJkil8NtxP/rbiRIAzogiSIx7TFSRTNdFVFVhZ4VOgC41LeTQhBYXxKfGqlxntfkKx5NcB0ZTFxhBKEpyka58zxY0/YQSTMcWVwdP0J4SiiKVKiXRA+Fd0bldX7/+udYCHbrfYAl5VH/XW7ovOhAPBwokY6wqpop67c+I5Yujd/iFQaJ2OwsBQEPk92AAAAAElFTkSuQmCC',
       ],
     },
-    name: 'trbuyi',
+    name: 'szyxyemhqo',
   },
   {
     config:
@@ -189,7 +189,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABUAAAATCAYAAAB/TkaLAAAAAXNSR0IArs4c6QAAAJNJREFUOE+9lEsOgDAIRMv9D41hQTMiv2rQXc3wOvxKa+CjAeYqoczMRLR19uyZekAl6NQ9XiqxodMO3MLUzA2qIBVnYKvBC8L0RVRBrQnXqf7spL4B0MT/oJhOxy2WqKxpVU9M3Ztbd6RU2GmUN1bpRlXQaElaa2qDo6FPu48Qz+1nKM5uBWs7PX1c0gflDWzU6QXoSmQUwXyN7QAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'aajfiary',
+    name: 'wauswsnnjono',
   },
   {
     config: '2934434637832931434148332943253337421887735176418468841924951531',
@@ -204,7 +204,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABUAAAAMCAYAAACNzvbFAAAAAXNSR0IArs4c6QAAAGxJREFUOE+9k0EOACEIA+3/H43hUMOSQjzIejJA6lAQa+BgQHO1omZm/iiAU6diGexfURKRwmlVTNlXkj4XdUFFFqmYj36frvwSqSqx27jXlVMlbbVyMZ834uPp7SByd3nt2kEpv0jedTLyozZ9QVwN2OdBFAAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'ezooabvl',
+    name: 'izkj',
   },
   {
     config:
@@ -220,7 +220,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABkAAAAQCAYAAADj5tSrAAAAAXNSR0IArs4c6QAAAJNJREFUOE+9k1EOgDAIQ+X+h8bw0aQiW2ui+qNmWx+lLI4fnnjCyMzE/oiwz9obAShx/naKlJAuWP9w4cIkBJV+6qQgnEVvj5ONdIL2qPcumxtkV3UJcfAr4e7uApkAEJ3awu52bVxCeIImUG9fz46LkpnwdPFBHmV1VyzIStAF2RCEPt2bV5woEbVuOVEiav0XyAl0qIARF3HNXwAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'zuzxz',
+    name: 'wsqh',
   },
   {
     config:
@@ -236,7 +236,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAACsAAAASCAYAAADCKCelAAAAAXNSR0IArs4c6QAAAM9JREFUSEvVlVEOgDAIQ+X+h56ZCQabMt3WxcwfPwzwKFDt2OixjViP/WBLKSUqbGa/N8GYLiglbM1Vm/X36JqlsAwYiyBAhGGJMwEwzvO2mvJJp+NGZaJiNXFWJDaFwBjHJtCaSNduevEIitBx3yNsFtNzH12wcVQM3L8z1RF2ZJeHYb3Ym9oKyFuEkQ4xJnMAlTPIYPHw2PEprOzKO6Ns5hDMERTAU7Bf/Fn5Z5yGxUNjk+qxp+bPYWYNWKz6qB6TUcP6aqjUXA67QoCa8wSOS+ATWKmMiwAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'zrcgoolhd',
+    name: 'xsvvpeeo',
   },
   {
     config:
@@ -252,7 +252,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABMAAAAMCAYAAACA0IaCAAAAAXNSR0IArs4c6QAAAHJJREFUOE+tklEOwCAIQ9f7H5oFM0xlSLdE/5TyoAiugweKZWYWGgCtfhsMCAOqN25mwlSyijv0BVsqAcg2+Z7tLzZd6LaqhDzb0PEYBkxBugIMnbDh+fmtDp474lnK34wiX1ZE7pnaw3I1/iTttEc7uwF11GANnWHNTQAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'fyemcaii',
+    name: 'xikp',
   },
   {
     config:
@@ -268,7 +268,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABcAAAAQCAYAAAD9L+QYAAAAAXNSR0IArs4c6QAAAJVJREFUOE+1lFEKwDAIQ+f9D+1wzOFsNFLofgatvKTRVq6DnzC2qqqILHXVeuS1cAN4cRSo1rPREp4B7jT+kTB1ngHmGokZyPdQdK3zDF2O/Yoi8CM8aWhVU0G/uDp4jGJHYNTQ2DgkuBXLUeexoWjOu0mBDZ24neb/y5yB2Wj63JfTMm3YpI6+Ld0ss8eLXiJ2ybr9GweEgBGsYGI6AAAAAElFTkSuQmCC',
       ],
     },
-    name: 'yualyyzm',
+    name: 'aavzuhnmpq',
   },
   {
     config:
@@ -284,7 +284,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAAAXNSR0IArs4c6QAAAKJJREFUOE+9lNsSgCAIROP/P5qGZpZZCcXM8qUrZxFW5PhwibFVVUXkut+xwHPgLgHm/APfUZ64e685av2m9gZnTgM3MH6ASAyIz9ixXWP8LfPolhjA4iyUxZXwVWtaUo3Ps0w4cxaq3jdw1AyAKMSNnvnm8NHWYa+ssZWzukd+1KyseVmCw3nSc0Zm2cdw9nAaXAy7chL2BtrMoCvhqz63uBNnSqASrXDHMgAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'cfknyiij',
+    name: 'ysawhmhm',
   },
   {
     config:
@@ -300,7 +300,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAAXNSR0IArs4c6QAAAKJJREFUOE+1VEEOgDAIk/8/GoORpWEt00w9CpRSyuz48DOG5e4e/81sincxmZxNEDCBWOxqjswiOYqxSIFlHsbbMZHBitXELItZ4RZY0mcjpxx1eXRMxVBteMihbIYWqIthlpGaRaBqhE1fgXVAymOUGfPaJPTtxcpweQEpOmMrwTpv4VXUC8END2ZP/IT+Yvn/3qY6cmbk5QLQY9vv2c7DewJ6L6gUHpx8PgAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'cfzit',
+    name: 'iszyekqk',
   },
   {
     config:
@@ -316,7 +316,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABsAAAAOCAYAAADez2d9AAAAAXNSR0IArs4c6QAAAIJJREFUOE/dlN0KwCAIhXfe/6EdDhzO/IsgYt1FRz89Srg2HngsIiIA7luntij+k5BFkmwV5uV5YBqiK4+AWedZrrczT2Rhq5phLpmVszBb7DAzLdB2Rfaw7RJj7bX3cuMyiN3MaqlS2Ayos8Vnwdga6dCzSb9Vn0E5s86P0dX8F3YDzpJkDxLJCaUAAAAASUVORK5CYII=',
       ],
     },
-    name: 'yuo',
+    name: 'isuzxmmpnp',
   },
   {
     config:
@@ -332,7 +332,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAACEAAAAOCAYAAAChHnWMAAAAAXNSR0IArs4c6QAAAKpJREFUSEvNlNsOgDAIQ+X/PxqDCYYgpcxLoo8b0LOCyPaDT1YZVFVFBOax+0pvDOHFmcg0LsKMIKywJ5kLCCQCxHjmdguRXxVhMlQWirDMvRLCxbyQCfgcVCAVgJ11dWA7kEAcxBWICIJAjwfmyyxS/QkdyCQ+x9B2VENVDSobxNiaiytocrskZDPaH6zWraVz1wkEOdoTnVvd3mD74WzhNPDLuEdOvAW2A7CvoA/6jjSUAAAAAElFTkSuQmCC',
       ],
     },
-    name: 'gpgapn',
+    name: 'uvuupeom',
   },
   {
     config: '24217798311837543767832691975772183284944356681676733634119444',
@@ -347,7 +347,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAYAAAACsSQRAAAAAXNSR0IArs4c6QAAAH5JREFUOE+1U0EOwCAIG/9/NAtLmnS1MA/OgwqBUqrEdWAFY2RmRsTL52po3AJSSQykCWVrzFIVQVOXytZSn4Bcu23/DqjTq2VSCQwEe4sJCwdR+VRRH7s2V9G9Enwab0HwMsqE/bhXeyMIWKoO/zHpKk4fjn/y55zszOcRkBueeIAQ+7XZcwAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'gfawzaflcb',
+    name: 'isee',
   },
   {
     config:
@@ -363,7 +363,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABcAAAAOCAYAAADE84fzAAAAAXNSR0IArs4c6QAAAINJREFUOE+1k9sOwCAIQ8f/fzQLSzAMKpeZ+aj1tKDQ9eOiis3MLBoiWlq0hzgpXCFZAGvqde3kMJmpZpxcLmTps9RPK5Fjpx2hBaCKAP8CViNfyQt+AkYGW7ik6Jh5nU0P26ICge9MdN9r7VuE5LsfYKvINGnyamIn5+UQTWDjCT2B33n+TA9boWjsAAAAAElFTkSuQmCC',
       ],
     },
-    name: 'yjczaa',
+    name: 'ixzwiuppnkmq',
   },
   {
     config:
@@ -379,7 +379,7 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAAAsAAAATCAYAAABGKffQAAAAAXNSR0IArs4c6QAAAGxJREFUOE+lkksOACEIQ+39D43BpAYYyIi68VcftYrRaGhox71YRATABsS526gsEfCxoTQeslV0rU+2tEUAkK0tMi9CgRVzrP2752jDpRH9ZRE6GzGyLELnubrgzt2WbIljjOULnnzV+y/6R5+LSFwUYRLNiwAAAABJRU5ErkJggg==',
       ],
     },
-    name: 'ufeoh',
+    name: 'usumeq',
   },
   {
     config:
@@ -395,9 +395,10 @@ const data = [
         'iVBORw0KGgoAAAANSUhEUgAAABEAAAAPCAYAAAACsSQRAAAAAXNSR0IArs4c6QAAAIBJREFUOE+tU1sOwCAIG/c/NItmXSorIsn2Y0akL8SuHz4Dhru7mb3/FTbfn02jMM4uCHoW5qgG4JEg3vvI50Y0qxrbLUFUNtG2tMMZQbqqgaBUMljbdnhaKhM1wVJJO5OoIntwZbDL6J48qly2dpgxe3gzNyU526Osfrxwu4W8AczZcBD7rwRYAAAAAElFTkSuQmCC',
       ],
     },
-    name: 'ejgsrz',
+    name: 'wyoj',
   },
 ]
+
 const saveDataName = 'ma5a_invdr_generated_data'
 
 const url = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
@@ -416,4 +417,4 @@ const generateLinks = () => {
     })
 }
 
-export { invaderData, saveDataName, url, generateLinks }
+export { invaderData, saveDataName, url, generateLinks, data }

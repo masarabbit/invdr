@@ -1,4 +1,4 @@
-import { saveDataName } from '../generate/data.js'
+import { saveDataName, generateLinks } from '../generate/data.js'
 
 window.addEventListener('DOMContentLoaded', () => {
   const saveData = localStorage.getItem(saveDataName)
@@ -45,6 +45,8 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       })
   }
+
+  generateLinks()
 })
 
 // convert from old config to new one

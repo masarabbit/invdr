@@ -1,7 +1,5 @@
 import { saveDataName, generateLinks, invaderData } from './data.js'
 
-// TODO add brief readme
-
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
   const directions = [10, -10, 0]
@@ -33,17 +31,12 @@ window.addEventListener('DOMContentLoaded', () => {
       const saveData = localStorage.getItem(saveDataName)
       if (saveData) this.savedData = JSON.parse(saveData)
     },
-    saveData(config) {
+    saveData(config, name) {
       this.savedData = [
         {
           config,
           imgConfig: this.imgConfig,
-          name: new Array(3 + randomN(7))
-            .fill('')
-            .reduce(
-              a => (a += 'abcdefghijklmnopqrstuvwxyzaiueoyz'[randomN(32)]),
-              '',
-            ),
+          name,
         },
         ...this.savedData,
       ]
@@ -243,16 +236,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }),
       }
     }
-    generateConfig() {
-      this.generatedConfig = [
-        ...this.layer1.leftCells.map(
-          c => configKey[`${c.config.x}${c.config.y}`],
-        ),
-        ...this.layer2.leftCells.map(
-          c => configKey[`${c.config.x}${c.config.y}`],
-        ),
-      ].join('')
-    }
     getPositions(cells) {
       const positions = cells.map(c => {
         const { left, top } = c.el.getBoundingClientRect()
@@ -407,10 +390,24 @@ window.addEventListener('DOMContentLoaded', () => {
       dataUrlInput.value = data.imgConfig.frames[0]
     }
     createInvaderData() {
-      this.generateConfig()
+      const a = this.layer1.leftCells.map(
+        c => configKey[`${c.config.x}${c.config.y}`],
+      )
+      const b = this.layer2.leftCells.map(
+        c => configKey[`${c.config.x}${c.config.y}`],
+      )
+      this.generatedConfig = [...a, ...b].join('')
+      this.name =
+        a
+          .slice(0, Math.floor(a.length / 14))
+          .reduce((acc, n) => (acc += 'aiusvwxyz'[n - 1]), '') +
+        b
+          .reverse()
+          .slice(0, Math.floor(b.length / 14))
+          .reduce((acc, n) => (acc += 'khjeopqmn'[n - 1]), '')
       configInput.value = this.generatedConfig
       this.createAnimation()
-      if (this.save) data.saveData(configInput.value)
+      if (this.save) data.saveData(configInput.value, this.name)
     }
   }
 
@@ -425,6 +422,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     data.invader = new Invader({ save })
   }
+
+  configInput.addEventListener(
+    'input',
+    e => (e.target.value = e.target.value.replace(/[^1-9]/g, '')),
+  )
 
   downloadBtn.addEventListener('click', () => {
     if (!data.animation.frame1.downloadImg)

@@ -1,4 +1,6 @@
-import { saveDataName, generateLinks } from './data.js'
+import { saveDataName, generateLinks, invaderData } from './data.js'
+
+// TODO update the sort logic for gallery (possibly add time stamp)
 
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
@@ -142,16 +144,17 @@ window.addEventListener('DOMContentLoaded', () => {
         ...props,
       })
       this.body.leftCells.push(this)
-      if (
-        this.body.leftCells.length <
-        (indexArray.length || this.body.invader.growthEnd)
-      ) {
+      const growthEnd = indexArray.length || this.body.invader.growthEnd
+      if (this.body.leftCells.length < growthEnd) {
         this.split()
       } else if (
         this.body.type === 'layer2' &&
         this.body.invader === data.invader
       ) {
-        setTimeout(() => this.body.invader.createInvaderData(), 2400)
+        setTimeout(
+          () => this.body.invader.createInvaderData(),
+          GROW_SPEED * growthEnd + 100,
+        )
       }
     }
     split() {
@@ -447,7 +450,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document
     .querySelector('.generate-from-code')
-    .addEventListener('click', () => generate({ save: false }))
+    .addEventListener('click', () => {
+      const doesInvaderExist = [...invaderData, ...data.savedData].find(
+        d => d.config === configInput.value,
+      )
+      generate({ save: !doesInvaderExist })
+    })
 
   document.querySelector('.generate-new').addEventListener('click', () => {
     configInput.value = ''

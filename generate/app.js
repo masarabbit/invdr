@@ -1,6 +1,6 @@
 import { saveDataName, generateLinks, invaderData } from './data.js'
 
-// TODO update the sort logic for gallery (possibly add time stamp)
+// TODO add brief readme
 
 window.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.querySelector('.wrapper')
@@ -34,16 +34,19 @@ window.addEventListener('DOMContentLoaded', () => {
       if (saveData) this.savedData = JSON.parse(saveData)
     },
     saveData(config) {
-      this.savedData.push({
-        config,
-        imgConfig: this.imgConfig,
-        name: new Array(3 + randomN(7))
-          .fill('')
-          .reduce(
-            a => (a += 'abcdefghijklmnopqrstuvwxyzaiueoyz'[randomN(32)]),
-            '',
-          ),
-      })
+      this.savedData = [
+        {
+          config,
+          imgConfig: this.imgConfig,
+          name: new Array(3 + randomN(7))
+            .fill('')
+            .reduce(
+              a => (a += 'abcdefghijklmnopqrstuvwxyzaiueoyz'[randomN(32)]),
+              '',
+            ),
+        },
+        ...this.savedData,
+      ]
       localStorage.setItem(saveDataName, JSON.stringify(this.savedData))
     },
   }

@@ -44,11 +44,14 @@ nav {
   z-index: 1;
 }
 
-.sign {
+footer {
   position: fixed;
   color: #fff;
-  bottom: 10px;
-  right: 10px;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
   font-size: 10px;
 }
 

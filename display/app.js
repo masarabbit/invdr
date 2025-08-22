@@ -102,8 +102,8 @@ function init() {
       this.el = this.wrapper.querySelector('.card')
       this.createOverlay()
 
-      mouse.move(this.el, 'add', e => this.handleInteraction(e))
-      mouse.leave(this.el, 'add', () => this.clearProperties())
+      mouse.move(this.wrapper, 'add', e => this.handleInteraction(e))
+      mouse.leave(this.wrapper, 'add', () => this.clearProperties())
 
       this.animationTimer = setTimeout(() => {
         if (!this.animation.interval) this.animateCard()
